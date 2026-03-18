@@ -571,6 +571,17 @@
         <div class="container mx-auto px-4 sm:px-6 relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 sm:gap-20 items-center">
                 <div data-aos="fade-up" data-aos-duration="1000" class="text-center lg:text-left">
+                    
+                    <!-- ADMISSION BANNER -->
+                    <a href="#daftar" class="inline-flex items-center gap-3 bg-islamic-gold-500/10 hover:bg-islamic-gold-500/20 border border-islamic-gold-500/30 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full mb-6 sm:mb-8 transition-all group backdrop-blur-sm self-center lg:self-start">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-islamic-gold-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-islamic-gold-500"></span>
+                        </span>
+                        <span class="text-xs sm:text-sm font-bold text-islamic-gold-400 tracking-wide uppercase">Daftar Santri Baru 2026/2027</span>
+                        <i class="bi bi-chevron-right text-islamic-gold-400 text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+
                     <p class="font-arabic text-2xl sm:text-3xl mb-4 sm:mb-6 text-islamic-gold-400">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
                     <h1 class="text-3xl sm:text-5xl xl:text-6xl font-extrabold mb-6 leading-tight">
                         Membentuk Generasi <span class="text-islamic-gold-400">Qur'ani</span> Berakhlakul Karimah
@@ -581,7 +592,7 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="#daftar" class="bg-islamic-gold-500 hover:bg-islamic-gold-600 text-white px-8 py-4 rounded-full font-bold transition-all shadow-xl shadow-amber-900/20 flex items-center justify-center gap-2 group">
                             <span>Daftar Sekarang</span>
-                            <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            <i class="bi bi-arrow-down group-hover:translate-y-1 transition-transform"></i>
                         </a>
                         <a href="#program" class="bg-white/10 hover:bg-white/20 backdrop-blur-md px-8 py-4 rounded-full font-bold transition-all border border-white/20 text-center">
                             Lihat Program
@@ -849,32 +860,45 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                    <!-- Achievement 1 -->
-                    <div class="bg-gradient-to-br from-white to-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group" data-aos="fade-up">
-                        <div class="w-14 h-14 bg-islamic-gold-500/10 text-islamic-gold-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <i class="bi bi-trophy-fill text-3xl"></i>
+                    @foreach($prestasis as $prestasi)
+                    <div class="bg-gradient-to-br from-white to-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group cursor-pointer flex flex-col h-full" 
+                         data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}"
+                         data-title="{{ $prestasi->title }}" 
+                         data-desc="{{ $prestasi->description }}" 
+                         data-image="{{ $prestasi->image ? Storage::url($prestasi->image) : '' }}" 
+                         data-icon="bi-trophy-fill"
+                         onclick="openDetailModal(this)">
+                        <div class="w-14 h-14 bg-islamic-gold-500/10 text-islamic-gold-600 rounded-2xl flex items-center justify-center mb-6 overflow-hidden group-hover:scale-110 transition-transform shrink-0">
+                            @if($prestasi->image)
+                                <img src="{{ Storage::url($prestasi->image) }}" class="w-full h-full object-cover">
+                            @else
+                                <i class="bi bi-trophy-fill text-3xl"></i>
+                            @endif
                         </div>
-                        <h4 class="text-xl font-bold text-slate-900 mb-3">Juara Umum MTQ</h4>
-                        <p class="text-sm text-slate-600 leading-relaxed">Meraih predikat juara umum dalam berbagai tingkatan Musabaqah Tilawatil Qur'an (MTQ) tingkat Regional.</p>
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">{{ $prestasi->title }}</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed flex-grow">{{ Str::limit($prestasi->description, 100) }}</p>
                     </div>
+                    @endforeach
 
-                    <!-- Achievement 2 -->
-                    <div class="bg-gradient-to-br from-white to-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="100">
-                        <div class="w-14 h-14 bg-islamic-green-500/10 text-islamic-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <i class="bi bi-patch-check-fill text-3xl"></i>
+                    @foreach($penghargaans as $penghargaan)
+                    <div class="bg-gradient-to-br from-white to-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group cursor-pointer flex flex-col h-full" 
+                         data-aos="fade-up" data-aos-delay="{{ ($loop->index + count($prestasis)) * 100 }}"
+                         data-title="{{ $penghargaan->title }}" 
+                         data-desc="{{ $penghargaan->description }}" 
+                         data-image="{{ $penghargaan->image ? Storage::url($penghargaan->image) : '' }}" 
+                         data-icon="bi-award-fill"
+                         onclick="openDetailModal(this)">
+                        <div class="w-14 h-14 bg-islamic-green-500/10 text-islamic-green-600 rounded-2xl flex items-center justify-center mb-6 overflow-hidden group-hover:scale-110 transition-transform shrink-0">
+                            @if($penghargaan->image)
+                                <img src="{{ Storage::url($penghargaan->image) }}" class="w-full h-full object-cover">
+                            @else
+                                <i class="bi bi-award-fill text-3xl"></i>
+                            @endif
                         </div>
-                        <h4 class="text-xl font-bold text-slate-900 mb-3">Akreditasi A</h4>
-                        <p class="text-sm text-slate-600 leading-relaxed">Terakreditasi "A" (Sangat Baik) untuk kurikulum Tahfidz dan Pendidikan Formal oleh lembaga terkait.</p>
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">{{ $penghargaan->title }}</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed flex-grow">{{ Str::limit($penghargaan->description, 100) }}</p>
                     </div>
-
-                    <!-- Achievement 3 -->
-                    <div class="bg-gradient-to-br from-white to-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <i class="bi bi-award-fill text-3xl"></i>
-                        </div>
-                        <h4 class="text-xl font-bold text-slate-900 mb-3">Musabaqah Qira'atil Kutub</h4>
-                        <p class="text-sm text-slate-600 leading-relaxed">Penghargaan tertinggi dalam kompetisi membaca dan memahami kitab kuning tingkat nasional.</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -890,56 +914,42 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-50 relative group" data-aos="zoom-in">
+                @foreach($testimonis as $testimoni)
+                <div class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-50 relative group flex flex-col h-full" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">
                     <div class="absolute -top-5 left-10 w-10 h-10 bg-islamic-gold-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
                         <i class="bi bi-quote text-2xl"></i>
                     </div>
-                    <p class="text-sm sm:text-base text-slate-600 italic mb-8 leading-relaxed">
-                        "Alhamdulillah, ustadz di sini sangat telaten membimbing anak saya. Tidak hanya hafal, tapi bacaannya juga sekarang lebih tartil dan bagus tajwidnya."
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-islamic-green-100 rounded-full flex items-center justify-center text-islamic-green-700 font-bold text-lg">A</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900">Ibu Ahmad</h5>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Wali Santri</p>
-                        </div>
+                    
+                    <div class="flex items-center gap-1 mb-6 mt-2">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= $testimoni->rating)
+                                <i class="bi bi-star-fill text-amber-400 text-sm"></i>
+                            @else
+                                <i class="bi bi-star text-slate-300 text-sm"></i>
+                            @endif
+                        @endfor
                     </div>
-                </div>
 
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-50 relative group" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="absolute -top-5 left-10 w-10 h-10 bg-islamic-gold-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
-                        <i class="bi bi-quote text-2xl"></i>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-600 italic mb-8 leading-relaxed">
-                        "Selain hafal 30 juz, di sini saya mendapat teman seperjuangan yang shalih dan dididik menjadi pribadi yang mandiri. Fasilitasnya sangat mendukung."
+                    <p class="text-sm sm:text-base text-slate-600 italic mb-8 leading-relaxed flex-grow">
+                        "{{ $testimoni->content }}"
                     </p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-islamic-green-100 rounded-full flex items-center justify-center text-islamic-green-700 font-bold text-lg">M</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900">Muhammad Ali</h5>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Alumni Santri</p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        @if($testimoni->image)
+                            <img src="{{ Storage::url($testimoni->image) }}" class="w-12 h-12 bg-islamic-green-100 rounded-full object-cover flex-shrink-0 border-2 border-slate-100">
+                        @else
+                            <div class="w-12 h-12 bg-islamic-green-100 rounded-full flex items-center justify-center text-islamic-green-700 font-bold text-lg flex-shrink-0">
+                                {{ strtoupper(substr($testimoni->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div class="overflow-hidden">
+                            <h5 class="font-bold text-slate-900 truncate">{{ $testimoni->name }}</h5>
+                            @if($testimoni->role)
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">{{ $testimoni->role }}</p>
+                            @endif
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-50 relative group" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="absolute -top-5 left-10 w-10 h-10 bg-islamic-gold-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
-                        <i class="bi bi-quote text-2xl"></i>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-600 italic mb-8 leading-relaxed">
-                        "Integrasi pendidikan formal dan tahfidznya sangat seimbang. Anak saya tetap bisa berprestasi di jalur akademik sambil menjaga hafalan Qur'annya."
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-islamic-green-100 rounded-full flex items-center justify-center text-islamic-green-700 font-bold text-lg">F</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900">Bapak Fadhil</h5>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Wali Santri</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -953,113 +963,72 @@
                 <div class="h-1 w-20 bg-islamic-green-500 mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-12 sm:gap-16 max-w-6xl mx-auto">
-                <!-- Form Pertanyaan -->
-                <div data-aos="fade-right">
-                    <div class="bg-gradient-to-br from-emerald-50 to-white p-8 sm:p-10 rounded-[32px] border border-emerald-100 shadow-sm">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-12 h-12 bg-islamic-green-600 rounded-xl flex items-center justify-center text-white">
-                                <i class="bi bi-question-circle text-2xl"></i>
-                            </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-islamic-green-900">Tanyakan Kepada Kami</h3>
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg">Kapan pendaftaran santri baru dibuka?</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            Pendaftaran santri baru biasanya dibuka pada awal semester genap (sekitar bulan Januari - Maret) setiap tahunnya. Informasi detail gelombang pendaftaran akan selalu diumumkan melalui website ini dan akun Instagram resmi kami @pptqmmq_pacitan.
                         </div>
+                    </details>
 
-                        @if(session('success'))
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-6" role="alert">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-check-circle-fill"></i>
-                                    <span class="text-sm">{{ session('success') }}</span>
-                                </div>
-                            </div>
-                        @endif
-
-                        <form action="{{ route('questions.store') }}" method="POST" class="space-y-5">
-                            @csrf
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Nama Lengkap</label>
-                                <input type="text" name="name" value="{{ old('name') }}" required 
-                                    class="w-full px-4 py-3 mt-2 rounded-xl bg-white border border-emerald-200 focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all text-sm @error('name') border-red-500 @enderror" 
-                                    placeholder="Nama Anda">
-                                @error('name')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Email / WhatsApp</label>
-                                <input type="text" name="email" value="{{ old('email') }}" required 
-                                    class="w-full px-4 py-3 mt-2 rounded-xl bg-white border border-emerald-200 focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all text-sm @error('email') border-red-500 @enderror" 
-                                    placeholder="email@example.com atau 0812xxxxx">
-                                @error('email')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Pertanyaan Anda</label>
-                                <textarea name="question" rows="4" required 
-                                    class="w-full px-4 py-3 mt-2 rounded-xl bg-white border border-emerald-200 focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all text-sm @error('question') border-red-500 @enderror" 
-                                    placeholder="Tuliskan pertanyaan Anda tentang pendaftaran, program, atau hal lainnya...">{{ old('question') }}</textarea>
-                                @error('question')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <button type="submit" class="w-full py-4 bg-islamic-green-700 hover:bg-islamic-green-800 text-white font-bold rounded-xl transition-all shadow-lg shadow-islamic-green-200/50 flex items-center justify-center gap-3 group">
-                                <span>Kirim Pertanyaan</span>
-                                <i class="bi bi-send group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Display Q&A -->
-                <div data-aos="fade-left">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-2">
-                            <i class="bi bi-chat-left-dots text-islamic-green-600 text-xl"></i>
-                            <h3 class="text-lg font-bold text-slate-800">Tanya Jawab</h3>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg">Berapa biaya masuk dan SPP bulanan di MMQ Digital?</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            Untuk rincian biaya pendaftaran (Uang Pangkal, Seragam, Kitab, dll) dan Sumbangan Pembinaan Pendidikan (SPP) bulanan, Anda dapat langsung menghubungi layanan WhatsApp Admin kami untuk mendapatkan brosur rincian biaya terbaru tahun ajaran ini.
                         </div>
-                        <!-- Swiper Pagination -->
-                        <div class="swiper-pagination-custom flex gap-1"></div>
-                    </div>
+                    </details>
 
-                    <div class="swiper faq-swiper">
-                        <div class="swiper-wrapper">
-                            @forelse($publishedQuestions as $qa)
-                                <div class="swiper-slide h-auto">
-                                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all h-full flex flex-col">
-                                        <div class="flex items-start gap-3 mb-3">
-                                            <div class="w-8 h-8 bg-islamic-gold-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                                <i class="bi bi-person-circle text-islamic-gold-600"></i>
-                                            </div>
-                                            <div class="flex-1">
-                                                <p class="font-bold text-sm text-slate-900">{{ $qa->name }}</p>
-                                                <p class="text-xs text-slate-400">{{ $qa->created_at->diffForHumans() }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="ml-11 flex-1">
-                                            <p class="text-sm text-slate-700 font-medium mb-3">{{ $qa->question }}</p>
-                                            <div class="bg-emerald-50 p-4 rounded-xl border-l-4 border-islamic-green-600 h-full">
-                                                <div class="flex items-center gap-2 mb-2">
-                                                    <i class="bi bi-shield-check text-islamic-green-600"></i>
-                                                    <span class="text-xs font-bold text-islamic-green-800 uppercase">Admin MMQ Digital</span>
-                                                </div>
-                                                <p class="text-sm text-slate-600 leading-relaxed">{{ $qa->answer }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="swiper-slide">
-                                    <div class="bg-slate-50 p-8 rounded-2xl text-center border border-slate-100">
-                                        <i class="bi bi-inbox text-4xl text-slate-300 mb-3"></i>
-                                        <p class="text-slate-400 text-sm">Belum ada pertanyaan yang dipublikasikan. Jadilah yang pertama bertanya!</p>
-                                    </div>
-                                </div>
-                            @endforelse
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg">Apakah calon santri diwajibkan sudah bisa membaca Al-Qur'an?</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            Syarat utama masuk MMQ Digital adalah memiliki niat yang kuat untuk menghafal dan belajar. Kemampuan membaca Al-Qur'an dengan tartil akan sangat membantu, namun kami juga memiliki program tahsin dasar bagi santri yang bacaannya masih perlu perbaikan di awal masuk.
                         </div>
-                    </div>
+                    </details>
+
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg">Apa saja ekstrakurikuler unggulan selain Tahfidz?</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            Sesuai visi 'Digital', santri kami dibekali keterampilan teknologi sepeti Desain Grafis, Video Editing, dan IT Dasar. Selain itu terdapat ekstrakurikuler Bahasa Arab & Inggris, Kaligrafi, Muhadloroh (Public Speaking), dan Olahraga Sunnah.
+                        </div>
+                    </details>
+                    
+                    <!-- FAQ Item 5 -->
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg">Bolehkah santri membawa HP/Laptop?</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            Selama kegiatan KBM normal santri tidak diperkenankan memegang alat elektronik pribadi. Penggunaan Laptop/Komputer untuk praktek IT Digital akan difasilitasi di Laboratorium Komputer pesantren dengan pengawasan guru pembimbing.
+                        </div>
+                    </details>
                 </div>
             </div>
         </div>
@@ -1223,6 +1192,31 @@
         </div>
     </footer>
 
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDetailModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="detailModalContent">
+            <button onclick="closeDetailModal()" class="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors z-10">
+                <i class="bi bi-x text-2xl"></i>
+            </button>
+            
+            <div id="detailModalImageContainer" class="w-full h-[50vh] sm:h-[60vh] bg-slate-900 flex items-center justify-center flex-shrink-0 relative">
+                <img id="detailModalImage" src="" alt="Detail Image" class="w-full h-full object-contain hidden" style="padding: 1rem;">
+                <div id="detailModalIconContainer" class="hidden text-islamic-green-600 bg-islamic-green-50 w-full h-full flex items-center justify-center">
+                    <i id="detailModalIcon" class="text-6xl sm:text-8xl"></i>
+                </div>
+            </div>
+            
+            <div class="p-6 sm:p-8 overflow-y-auto">
+                <h3 id="detailModalTitle" class="text-2xl sm:text-3xl font-bold text-islamic-green-900 mb-4"></h3>
+                <p id="detailModalDesc" class="text-slate-600 leading-relaxed text-sm sm:text-base whitespace-pre-wrap"></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
@@ -1318,6 +1312,65 @@
                 shade.classList.add('hidden');
                 document.body.style.overflow = '';
             }
+        }
+
+        // Detail Modal Logic
+        function openDetailModal(element) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailModalContent');
+            const imgEl = document.getElementById('detailModalImage');
+            const iconContainer = document.getElementById('detailModalIconContainer');
+            const iconEl = document.getElementById('detailModalIcon');
+            const titleEl = document.getElementById('detailModalTitle');
+            const descEl = document.getElementById('detailModalDesc');
+
+            const title = element.getAttribute('data-title');
+            const desc = element.getAttribute('data-desc');
+            const image = element.getAttribute('data-image');
+            const iconClass = element.getAttribute('data-icon');
+
+            titleEl.textContent = title;
+            descEl.textContent = desc;
+
+            if (image && image !== '') {
+                imgEl.src = image;
+                imgEl.classList.remove('hidden');
+                iconContainer.classList.add('hidden');
+                iconContainer.classList.remove('flex');
+            } else {
+                imgEl.classList.add('hidden');
+                iconContainer.classList.remove('hidden');
+                iconContainer.classList.add('flex');
+                iconEl.className = 'text-6xl sm:text-8xl bi ' + iconClass;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Trigger animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.classList.add('opacity-100');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+                document.body.style.overflow = 'hidden';
+            }, 10);
+        }
+
+        function closeDetailModal() {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailModalContent');
+            
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
         }
     </script>
 

@@ -14,12 +14,18 @@ Route::get('/', function () {
         ->latest()
         ->take(10)
         ->get();
-    return view('landing', compact('publishedQuestions'));
+        
+    $prestasis = \App\Models\Prestasi::where('is_active', true)->latest()->get();
+    $penghargaans = \App\Models\Penghargaan::where('is_active', true)->latest()->get();
+    $testimonis = \App\Models\Testimoni::where('is_active', true)->latest()->get();
+    
+    return view('landing', compact('publishedQuestions', 'prestasis', 'penghargaans', 'testimonis'));
 })->name('landing');
 
 // Halaman Donasi (Public - Tidak perlu login)
 Route::get('/donasi', function () {
-    return view('donasi');
+    $donasiPoster = \App\Models\Donasi::where('is_active', true)->latest()->first();
+    return view('donasi', compact('donasiPoster'));
 })->name('donasi');
 
 // Chatbot Test Page (for debugging)
@@ -156,4 +162,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Generate Token Raport (Admin only)
     Route::post('/generate-token', [PublicRaportController::class, 'generateToken'])->name('raport.generate-token');
+
+    // Admin Data Management
+    Route::resource('/admin/prestasi', \App\Http\Controllers\PrestasiController::class)->names('admin.prestasi')->except(['show']);
+    Route::resource('/admin/penghargaan', \App\Http\Controllers\PenghargaanController::class)->names('admin.penghargaan')->except(['show']);
+    Route::resource('/admin/testimoni', \App\Http\Controllers\TestimoniController::class)->names('admin.testimoni')->except(['show']);
+    Route::resource('/admin/donasi', \App\Http\Controllers\DonasiController::class)->names('admin.donasi')->except(['show']);
 });

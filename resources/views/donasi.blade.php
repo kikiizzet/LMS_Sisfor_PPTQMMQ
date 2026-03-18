@@ -52,10 +52,20 @@
         </div>
     </section>
 
-    <!-- BANK ACCOUNTS -->
+    <!-- BANK ACCOUNTS & POSTER -->
     <section class="pb-24">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto space-y-6">
+            <div class="max-w-3xl mx-auto space-y-8">
+                
+                @if(isset($donasiPoster) && $donasiPoster->image)
+                <!-- DONASI POSTER -->
+                <div class="bg-slate-50 rounded-3xl p-4 sm:p-6 mb-8 shadow-sm border border-slate-100">
+                    <img src="{{ Storage::url($donasiPoster->image) }}" alt="{{ $donasiPoster->title ?? 'Poster Donasi' }}" class="w-full h-auto rounded-2xl shadow-sm object-cover">
+                    @if($donasiPoster->title)
+                        <p class="text-center mt-4 text-slate-700 font-medium">{{ $donasiPoster->title }}</p>
+                    @endif
+                </div>
+                @endif
                 <!-- BRI -->
                 <div class="bg-slate-50 rounded-2xl p-8 hover:bg-slate-100 transition">
                     <div class="flex items-center gap-4 mb-6">

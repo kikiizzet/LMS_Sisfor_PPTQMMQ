@@ -451,6 +451,28 @@
                     <i class="bi bi-chat-square-text me-3"></i> Kelola FAQ
                 </a>
             </li>
+            
+            <li class="menu-label">Kelola Konten Web</li>
+            <li>
+                <a href="{{ route('admin.prestasi.index') }}" class="{{ Request::is('admin/prestasi*') ? 'active' : '' }}">
+                    <i class="bi bi-trophy-fill me-3"></i> Data Prestasi
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.penghargaan.index') }}" class="{{ Request::is('admin/penghargaan*') ? 'active' : '' }}">
+                    <i class="bi bi-award-fill me-3"></i> Data Penghargaan
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.testimoni.index') }}" class="{{ Request::is('admin/testimoni*') ? 'active' : '' }}">
+                    <i class="bi bi-star-fill me-3"></i> Data Testimoni
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.donasi.index') }}" class="{{ Request::is('admin/donasi*') ? 'active' : '' }}">
+                    <i class="bi bi-card-image me-3"></i> Data Donasi Poster
+                </a>
+            </li>
         </ul>
 
         <div class="mt-auto px-3 pb-4 text-center">

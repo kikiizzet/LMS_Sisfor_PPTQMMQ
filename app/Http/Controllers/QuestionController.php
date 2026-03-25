@@ -15,12 +15,11 @@ class QuestionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|string|max:255',
             'question' => 'required|string|max:1000',
         ], [
             'name.required' => 'Nama wajib diisi',
             'email.required' => 'Email/WhatsApp wajib diisi',
-            'email.email' => 'Format email tidak valid',
             'question.required' => 'Pertanyaan wajib diisi',
             'question.max' => 'Pertanyaan maksimal 1000 karakter',
         ]);
@@ -90,5 +89,34 @@ class QuestionController extends Controller
     {
         $question->delete();
         return back()->with('success', 'Pertanyaan berhasil dihapus!');
+    }
+
+    /**
+     * Simpan FAQ baru langsung dari admin
+     */
+    public function storeAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string|max:1000',
+            'answer' => 'required|string|max:2000',
+        ], [
+            'question.required' => 'Pertanyaan wajib diisi',
+            'answer.required' => 'Jawaban wajib diisi',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        Question::create([
+            'name' => 'Admin MMQ',
+            'email' => '-',
+            'question' => $request->question,
+            'answer' => $request->answer,
+            'is_published' => true,
+            'answered_at' => now(),
+        ]);
+
+        return back()->with('success', 'FAQ baru berhasil ditambahkan!');
     }
 }

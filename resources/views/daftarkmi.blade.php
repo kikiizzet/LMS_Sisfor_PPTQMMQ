@@ -13,6 +13,11 @@
         background: radial-gradient(circle at top right, #f5f3ff, #ffffff);
         min-height: 100vh;
         width: 100%;
+        transition: background 0.3s ease;
+    }
+
+    [data-theme="dark"] .content-wrapper {
+        background: radial-gradient(circle at top right, #0f172a, #1e293b);
     }
 
     .card-main {
@@ -80,6 +85,30 @@
         transform: translateY(-50%);
         color: #adb5bd;
         z-index: 5;
+    }
+
+    /* Dark Mode specific overrides */
+    [data-theme="dark"] .table-premium thead th {
+        background: #1e293b;
+        color: #94a3b8;
+        border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .table-premium tbody td {
+        border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .btn-action {
+        background: #334155 !important;
+        border-color: #475569 !important;
+    }
+    [data-theme="dark"] .avatar-circle {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    [data-theme="dark"] .text-muted {
+        color: #94a3b8 !important;
+    }
+    [data-theme="dark"] .bg-white {
+        background: #1e293b !important;
+        border-color: #334155 !important;
     }
 </style>
 

@@ -14,6 +14,11 @@
         min-height: 100vh;
         width: 100%;
         padding-bottom: 50px;
+        transition: background 0.3s ease;
+    }
+
+    [data-theme="dark"] .content-wrapper {
+        background: radial-gradient(circle at top right, #0f172a, #1e293b);
     }
 
     /* Card Styling */
@@ -118,11 +123,50 @@
         color: #1e293b;
         display: flex;
         align-items: center;
+        transition: color 0.3s ease;
+    }
+
+    [data-theme="dark"] .section-title {
+        color: #f1f5f9;
     }
 
     .section-title i {
         margin-right: 12px;
         color: var(--accent-color);
+    }
+
+    /* Dark Mode specific overrides */
+    [data-theme="dark"] .form-label-custom {
+        color: #94a3b8;
+    }
+    [data-theme="dark"] .card-header-premium {
+        border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .table-premium thead th {
+        background: #1e293b;
+        color: #94a3b8;
+        border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .table-premium tbody td {
+        border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .group-header {
+        background: #334155;
+        color: #cbd5e1;
+    }
+    [data-theme="dark"] .score-input {
+        background: #0f172a;
+        border-color: #334155;
+        color: #38bdf8;
+    }
+    [data-theme="dark"] .btn-white {
+        background: #1e293b;
+        border-color: #334155;
+        color: #f1f5f9;
+    }
+    [data-theme="dark"] .bg-white {
+        background: #1e293b !important;
+        border-color: #334155 !important;
     }
 </style>
 
@@ -138,7 +182,7 @@
                     </a>
                     <h2 class="fw-bold text-dark mb-0" style="font-size: clamp(1.2rem, 4vw, 1.75rem);">Input Nilai KMI</h2>
                     <button type="button" class="btn btn-primary btn-sm rounded-pill ms-3 px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#importModal">
-                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Bulk Import CSV
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Bulk Import Excel
                     </button>
                 </div>
             </div>
@@ -465,45 +509,142 @@
     });
 </script>
 
-<!-- Modal Import CSV -->
+<!-- Modal Import Excel -->
 <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
             <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="importModalLabel">Import Nilai via CSV</h5>
+                <h5 class="modal-title fw-bold" id="importModalLabel">Import Nilai via Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('raport-kmi.import') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body p-4">
+            <div class="modal-body p-4">
+
+                <!-- STEP 1: Upload & Preview -->
+                <div id="importStep1">
                     <div class="mb-4">
                         <label class="form-label fw-bold text-muted small uppercase mb-2">Step 1: Download Template</label>
                         <a href="{{ route('raport-kmi.download-template') }}" class="btn btn-outline-info w-100 rounded-3 py-2">
-                            <i class="bi bi-download me-2"></i> Download Template CSV
+                            <i class="bi bi-download me-2"></i> Download Template Excel
                         </a>
-                        <p class="text-muted small mt-2 italic">Isi data di Excel/Google Sheets, lalu simpan (Save As) sebagai format .CSV</p>
+                        <p class="text-muted small mt-2 italic">Isi data di Excel/Google Sheets, lalu simpan dan upload kembali.</p>
                     </div>
-                    <div>
-                        <label class="form-label fw-bold text-muted small uppercase mb-2">Step 2: Upload File CSV</label>
-                        <input type="file" name="file_csv" accept=".csv" required class="form-control form-control-minimal">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small uppercase mb-2">Step 2: Upload File Excel</label>
+                        <input type="file" id="importFileInput" accept=".xml,.xls,.csv" class="form-control form-control-minimal">
                     </div>
-                    <div class="mt-4 p-3 bg-light rounded-3 border">
-                        <h6 class="fw-bold small mb-2"><i class="bi bi-info-circle-fill text-info me-1"></i> Tips Efisiensi</h6>
+                    <div class="mt-3 p-3 bg-light rounded-3 border">
+                        <h6 class="fw-bold small mb-2"><i class="bi bi-info-circle-fill text-info me-1"></i> Tips</h6>
                         <ul class="text-muted small ps-3 mb-0">
-                            <li>Gunakan copy-paste masal di Excel untuk mempercepat pengisian.</li>
-                            <li>Pastikan header kolom tidak diubah agar sistem dapat mengenali data.</li>
-                            <li>Format angka menggunakan angka murni (tanpa huruf).</li>
+                            <li>Pastikan header kolom tidak diubah.</li>
+                            <li>Format nilai menggunakan angka murni.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
-                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Mulai Import
-                    </button>
+
+                <!-- STEP 2: Preview Confirmation -->
+                <div id="importStep2" style="display:none;">
+                    <div class="alert alert-success border-0 rounded-3 mb-3">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong id="importCountLabel">0 santri</strong> terdeteksi. Cek daftar nama di bawah sebelum konfirmasi.
+                    </div>
+                    <div style="max-height: 250px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px;">
+                        <table class="table table-sm mb-0">
+                            <thead class="table-light">
+                                <tr><th class="ps-3">#</th><th>Nama Santri</th></tr>
+                            </thead>
+                            <tbody id="importNamesList"></tbody>
+                        </table>
+                    </div>
                 </div>
-            </form>
+
+                <!-- Loading -->
+                <div id="importLoading" style="display:none;" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted small mt-2">Sedang membaca file...</p>
+                </div>
+
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-light rounded-pill px-4" id="importBtnBack" style="display:none;" onclick="importGoBack()">
+                    <i class="bi bi-arrow-left me-1"></i> Kembali
+                </button>
+                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" id="importBtnBatal">Batal</button>
+                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" id="importBtnPreview" onclick="importPreview()">
+                    <i class="bi bi-eye me-1"></i> Cek Data
+                </button>
+                <button type="button" class="btn btn-success rounded-pill px-4 shadow-sm" id="importBtnConfirm" style="display:none;" onclick="importConfirm()">
+                    <i class="bi bi-cloud-arrow-up-fill me-1"></i> Konfirmasi Import
+                </button>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Hidden form for actual import -->
+<form id="importConfirmForm" action="{{ route('raport-kmi.import') }}" method="POST" style="display:none;">
+    @csrf
+    <input type="hidden" name="temp_path" id="importTempPath">
+    <input type="hidden" name="file_extension" id="importFileExtension">
+</form>
+
+<script>
+function importPreview() {
+    const fileInput = document.getElementById('importFileInput');
+    if (!fileInput.files.length) {
+        alert('Pilih file terlebih dahulu!');
+        return;
+    }
+
+    document.getElementById('importStep1').style.display = 'none';
+    document.getElementById('importLoading').style.display = 'block';
+    document.getElementById('importBtnPreview').style.display = 'none';
+    document.getElementById('importBtnBatal').style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('file_csv', fileInput.files[0]);
+    formData.append('_token', '{{ csrf_token() }}');
+
+    fetch('{{ route("raport-kmi.preview-import") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('importLoading').style.display = 'none';
+        document.getElementById('importStep2').style.display = 'block';
+        document.getElementById('importBtnBack').style.display = 'inline-block';
+        document.getElementById('importBtnConfirm').style.display = 'inline-block';
+
+        document.getElementById('importCountLabel').textContent = data.count + ' santri';
+        document.getElementById('importTempPath').value = data.temp_path;
+        document.getElementById('importFileExtension').value = data.original_extension;
+
+        const tbody = document.getElementById('importNamesList');
+        tbody.innerHTML = '';
+        data.names.forEach((name, idx) => {
+            tbody.innerHTML += `<tr><td class="ps-3 text-muted">${idx+1}</td><td class="fw-semibold">${name}</td></tr>`;
+        });
+    })
+    .catch(() => {
+        document.getElementById('importLoading').style.display = 'none';
+        document.getElementById('importStep1').style.display = 'block';
+        document.getElementById('importBtnPreview').style.display = 'inline-block';
+        document.getElementById('importBtnBatal').style.display = 'inline-block';
+        alert('Gagal membaca file. Pastikan format file benar.');
+    });
+}
+
+function importGoBack() {
+    document.getElementById('importStep2').style.display = 'none';
+    document.getElementById('importStep1').style.display = 'block';
+    document.getElementById('importBtnBack').style.display = 'none';
+    document.getElementById('importBtnConfirm').style.display = 'none';
+    document.getElementById('importBtnPreview').style.display = 'inline-block';
+    document.getElementById('importBtnBatal').style.display = 'inline-block';
+}
+
+function importConfirm() {
+    document.getElementById('importConfirmForm').submit();
+}
+</script>
 @endsection

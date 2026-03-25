@@ -446,11 +446,6 @@
                     <i class="bi bi-bar-chart-line-fill me-3"></i> Rekapitulasi Nilai
                 </a>
             </li>
-            <li>
-                <a href="{{ route('admin.questions.index') }}" class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
-                    <i class="bi bi-chat-square-text me-3"></i> Kelola FAQ
-                </a>
-            </li>
             
             <li class="menu-label">Kelola Konten Web</li>
             <li>
@@ -471,6 +466,11 @@
             <li>
                 <a href="{{ route('admin.donasi.index') }}" class="{{ Request::is('admin/donasi*') ? 'active' : '' }}">
                     <i class="bi bi-card-image me-3"></i> Data Donasi Poster
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.questions.index') }}" class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
+                    <i class="bi bi-chat-square-text me-3"></i> Kelola FAQ
                 </a>
             </li>
         </ul>

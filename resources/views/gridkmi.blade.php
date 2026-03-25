@@ -6,6 +6,10 @@
         background: #f8fafc;
         min-height: 100vh;
         padding: 2rem 0;
+        transition: background 0.3s ease;
+    }
+    [data-theme="dark"] .grid-input-wrapper {
+        background: #0f172a;
     }
     .score-cell {
         width: 80px;
@@ -15,6 +19,11 @@
         padding: 5px;
         font-weight: 600;
         transition: all 0.2s;
+    }
+    [data-theme="dark"] .score-cell {
+        background: #1e293b;
+        border-color: #334155;
+        color: #38bdf8;
     }
     .score-cell:focus {
         border-color: #3b82f6;
@@ -26,8 +35,37 @@
         color: #64748b;
         display: none;
     }
+    [data-theme="dark"] .saving-indicator {
+        color: #94a3b8;
+    }
     .status-success { color: #10b981; }
     .status-error { color: #ef4444; }
+
+    /* Dark Mode Utility Overrides */
+    [data-theme="dark"] .card {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+    }
+    [data-theme="dark"] thead.bg-light,
+    [data-theme="dark"] .bg-light {
+        background-color: #334155 !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme="dark"] .text-muted {
+        color: #94a3b8 !important;
+    }
+    [data-theme="dark"] .text-dark {
+        color: #f1f5f9 !important;
+    }
+    [data-theme="dark"] .modal-content {
+        background: #1e293b;
+        color: #f1f5f9;
+    }
+    [data-theme="dark"] .form-select {
+        background-color: #1e293b;
+        color: #f1f5f9;
+        border-color: #334155;
+    }
 </style>
 
 <div class="grid-input-wrapper">

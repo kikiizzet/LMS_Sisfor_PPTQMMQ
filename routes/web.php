@@ -148,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/raport-kmi/hapus/{id}', [App\Http\Controllers\RaportKmiController::class, 'destroy'])->name('raport-kmi.destroy');
     Route::get('/raport-kmi/cetak/{id}', [App\Http\Controllers\RaportKmiController::class, 'cetak'])->name('raport-kmi.cetak');
     Route::post('/raport-kmi/import', [App\Http\Controllers\RaportKmiController::class, 'importCsv'])->name('raport-kmi.import');
+    Route::post('/raport-kmi/preview-import', [App\Http\Controllers\RaportKmiController::class, 'previewImport'])->name('raport-kmi.preview-import');
     Route::get('/raport-kmi/download-template', [App\Http\Controllers\RaportKmiController::class, 'downloadTemplate'])->name('raport-kmi.download-template');
     Route::get('/raport-kmi/grid', [App\Http\Controllers\RaportKmiController::class, 'grid'])->name('raport-kmi.grid');
     Route::post('/raport-kmi/store-ajax', [App\Http\Controllers\RaportKmiController::class, 'storeAjax'])->name('raport-kmi.store-ajax');
@@ -156,6 +157,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Question Management (FAQ/Comment System)
     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('admin.questions.index');
+    Route::post('/admin/questions', [QuestionController::class, 'storeAdmin'])->name('admin.questions.store');
     Route::put('/admin/questions/{question}', [QuestionController::class, 'update'])->name('admin.questions.update');
     Route::post('/admin/questions/{question}/publish', [QuestionController::class, 'togglePublish'])->name('admin.questions.publish');
     Route::delete('/admin/questions/{question}', [QuestionController::class, 'destroy'])->name('admin.questions.destroy');

@@ -954,85 +954,6 @@
         </div>
     </section>
 
-    <!-- FAQ / QUESTIONS SECTION -->
-    <section class="py-16 sm:py-24 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12 sm:mb-16">
-                <span class="text-islamic-green-600 font-bold tracking-widest text-xs sm:text-sm uppercase">Pertanyaan Umum</span>
-                <h2 class="text-2xl sm:text-5xl font-bold text-islamic-green-900 mt-4 mb-6">Ada Pertanyaan? Kami Siap Membantu</h2>
-                <div class="h-1 w-20 bg-islamic-green-500 mx-auto rounded-full"></div>
-            </div>
-
-            <div class="max-w-4xl mx-auto" data-aos="fade-up">
-                <div class="space-y-4">
-                    <!-- FAQ Item 1 -->
-                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
-                            <span class="text-base sm:text-lg">Kapan pendaftaran santri baru dibuka?</span>
-                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-chevron-down"></i>
-                            </span>
-                        </summary>
-                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
-                            Pendaftaran santri baru biasanya dibuka pada awal semester genap (sekitar bulan Januari - Maret) setiap tahunnya. Informasi detail gelombang pendaftaran akan selalu diumumkan melalui website ini dan akun Instagram resmi kami @pptqmmq_pacitan.
-                        </div>
-                    </details>
-
-                    <!-- FAQ Item 2 -->
-                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
-                            <span class="text-base sm:text-lg">Berapa biaya masuk dan SPP bulanan di MMQ Digital?</span>
-                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-chevron-down"></i>
-                            </span>
-                        </summary>
-                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
-                            Untuk rincian biaya pendaftaran (Uang Pangkal, Seragam, Kitab, dll) dan Sumbangan Pembinaan Pendidikan (SPP) bulanan, Anda dapat langsung menghubungi layanan WhatsApp Admin kami untuk mendapatkan brosur rincian biaya terbaru tahun ajaran ini.
-                        </div>
-                    </details>
-
-                    <!-- FAQ Item 3 -->
-                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
-                            <span class="text-base sm:text-lg">Apakah calon santri diwajibkan sudah bisa membaca Al-Qur'an?</span>
-                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-chevron-down"></i>
-                            </span>
-                        </summary>
-                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
-                            Syarat utama masuk MMQ Digital adalah memiliki niat yang kuat untuk menghafal dan belajar. Kemampuan membaca Al-Qur'an dengan tartil akan sangat membantu, namun kami juga memiliki program tahsin dasar bagi santri yang bacaannya masih perlu perbaikan di awal masuk.
-                        </div>
-                    </details>
-
-                    <!-- FAQ Item 4 -->
-                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
-                            <span class="text-base sm:text-lg">Apa saja ekstrakurikuler unggulan selain Tahfidz?</span>
-                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-chevron-down"></i>
-                            </span>
-                        </summary>
-                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
-                            Sesuai visi 'Digital', santri kami dibekali keterampilan teknologi sepeti Desain Grafis, Video Editing, dan IT Dasar. Selain itu terdapat ekstrakurikuler Bahasa Arab & Inggris, Kaligrafi, Muhadloroh (Public Speaking), dan Olahraga Sunnah.
-                        </div>
-                    </details>
-                    
-                    <!-- FAQ Item 5 -->
-                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
-                            <span class="text-base sm:text-lg">Bolehkah santri membawa HP/Laptop?</span>
-                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-chevron-down"></i>
-                            </span>
-                        </summary>
-                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
-                            Selama kegiatan KBM normal santri tidak diperkenankan memegang alat elektronik pribadi. Penggunaan Laptop/Komputer untuk praktek IT Digital akan difasilitasi di Laboratorium Komputer pesantren dengan pengawasan guru pembimbing.
-                        </div>
-                    </details>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- CTA / REGISTRATION SECTION -->
     <section id="daftar" class="py-16 sm:py-24 relative overflow-hidden bg-slate-50">
@@ -1093,20 +1014,38 @@
                 
                 <div class="lg:col-span-7" data-aos="fade-left">
                     <div class="bg-white shadow-2xl shadow-slate-200/50 p-8 sm:p-12 rounded-[32px] sm:rounded-[40px] border border-slate-50">
-                        <form action="https://formspree.io/f/meolywqp" method="POST" class="space-y-6">
+                        @if(session('success'))
+                            <div class="bg-emerald-50 border border-emerald-100 text-islamic-green-800 p-4 rounded-2xl mb-6 flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-xl"></i>
+                                <span class="text-sm font-bold">{{ session('success') }}</span>
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="bg-red-50 border border-red-100 text-red-800 p-4 rounded-2xl mb-6">
+                                <ul class="list-disc list-inside text-xs font-bold">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('questions.store') }}" method="POST" class="space-y-6">
+                            @csrf
                             <div class="grid sm:grid-cols-2 gap-6">
                                 <div class="space-y-2">
                                     <label class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Nama Lengkap</label>
-                                    <input type="text" name="name" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="Fulan bin Fulan">
+                                    <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="Fulan bin Fulan">
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Email / WhatsApp</label>
-                                    <input type="text" name="contact" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="0812xxxxxx">
+                                    <input type="text" name="email" value="{{ old('email') }}" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="0812xxxxxx">
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Pesan / Saran</label>
-                                <textarea name="message" rows="4" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="Tuliskan saran Anda di sini..."></textarea>
+                                <label class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Pesan / Pertanyaan</label>
+                                <textarea name="question" rows="4" required class="w-full px-5 py-4 rounded-xl sm:rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-islamic-green-500 transition-all placeholder:text-slate-300 text-sm sm:text-base" placeholder="Tuliskan pertanyaan atau saran Anda di sini...">{{ old('question') }}</textarea>
                             </div>
                             <button type="submit" class="w-full py-4 sm:py-5 bg-islamic-green-700 hover:bg-islamic-green-800 text-white font-bold rounded-xl sm:rounded-2xl transition-all shadow-xl shadow-islamic-green-200/50 flex items-center justify-center gap-3 group">
                                 <span class="text-sm sm:text-lg">Kirim Masukan</span>

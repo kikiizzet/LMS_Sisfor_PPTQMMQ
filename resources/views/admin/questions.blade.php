@@ -6,10 +6,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold text-slate-800 mb-1">
-                    <i class="bi bi-chat-square-text me-2 text-primary"></i>Kelola Pertanyaan FAQ
+                    <i class="bi bi-chat-square-text me-2 text-primary"></i>Kelola FAQ (Knowledge Base)
                 </h2>
-                <p class="text-muted small mb-0">Jawab dan kelola pertanyaan dari pengunjung landing page</p>
+                <p class="text-muted small mb-0">Kelola pertanyaan umum untuk melatih AI Chatbot</p>
             </div>
+            <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAddFaq">
+                <i class="bi bi-plus-lg me-1"></i> Tambah FAQ
+            </button>
         </div>
 
         @if(session('success'))
@@ -200,6 +203,43 @@
                     {{ $questions->links() }}
                 </div>
             @endif
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add FAQ -->
+<div class="modal fade" id="modalAddFaq" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-plus-circle me-2"></i>Tambah FAQ Baru (Knowledge Base)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info border-0 mb-4">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    Pertanyaan yang Anda tambahkan di sini akan langsung dipublikasikan dan digunakan oleh <strong>AI Chatbot</strong> sebagai basis pengetahuan.
+                </div>
+                <form action="{{ route('admin.questions.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase tracking-wider">Pertanyaan Utama</label>
+                        <input type="text" name="question" class="form-control" required placeholder="Contoh: Kapan pendaftaran gelombang 2 dibuka?">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase tracking-wider">Jawaban/Informasi</label>
+                        <textarea name="answer" class="form-control" rows="6" required placeholder="Berikan jawaban yang detail agar AI bisa memberikan informasi yang akurat kepada wali santri..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-circle me-1"></i>Simpan FAQ
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

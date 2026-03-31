@@ -41,7 +41,7 @@
     .status-success { color: #10b981; }
     .status-error { color: #ef4444; }
 
-    /* Dark Mode Utility Overrides */
+    /* Dark Mode  */
     [data-theme="dark"] .card {
         background: #1e293b !important;
         border-color: #334155 !important;

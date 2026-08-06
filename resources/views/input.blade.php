@@ -253,15 +253,7 @@
                     <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between mb-4 px-2 gap-3">
                         <div class="d-flex align-items-center bg-light px-3 py-2 rounded-pill">
                             <i class="bi bi-people-fill text-primary me-2 small"></i>
-                            <span class="fw-bold text-dark" style="font-size: 0.75rem; letter-spacing: 0.5px;">PILIH USTADZ PENGAMPU</span>
-                        </div>
-                        
-                        <div class="d-flex gap-2 w-100 w-sm-auto">
-                            <input type="text" id="newMusyrifName" placeholder="Nama Baru..." 
-                                class="form-control form-control-sm border-0 bg-light px-3" style="max-width: 220px; border-radius: 10px;">
-                            <button type="button" onclick="tambahMusyrif()" class="btn btn-sm btn-primary rounded-3 px-3 shadow-none">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
+                            <span class="fw-bold text-dark" style="font-size: 0.75rem; letter-spacing: 0.5px;">PILIH USTADZ PENGAMPU (DARI DATA GURU)</span>
                         </div>
                     </div>
 
@@ -271,16 +263,10 @@
                              id="item-{{ $musyrif->id }}" 
                              onclick="pilihMusyrif('{{ $musyrif->nama }}', this)"
                              data-id="{{ $musyrif->id }}">
-                            
-                            <span class="btn-nama text-dark small">{{ $musyrif->nama }}</span>
-                            
-                            <div class="chip-actions">
-                                <i class="bi bi-pencil-square text-warning" onclick="event.stopPropagation(); editMusyrif({{ $musyrif->id }}, '{{ $musyrif->nama }}')" style="cursor: pointer; font-size: 0.8rem;"></i>
-                                <i class="bi bi-trash text-danger" onclick="event.stopPropagation(); hapusMusyrif({{ $musyrif->id }})" style="cursor: pointer; font-size: 0.8rem;"></i>
-                            </div>
+                            <span class="btn-nama text-dark small"><i class="fas fa-user-tie me-1 text-muted"></i>{{ $musyrif->nama }}</span>
                         </div>
                     @empty
-                        <div id="no-data" class="ps-2 text-muted small">Belum ada daftar pengampu.</div>
+                        <div id="no-data" class="ps-2 text-muted small">Belum ada daftar guru aktif. Silakan tambahkan di menu Data Guru.</div>
                     @endforelse
                 </div>
             </div>
@@ -313,13 +299,17 @@
                                 <td>
                                     <div class="d-flex flex-column justify-content-center">
                                         <div class="search-container position-relative mb-1">
-                                            <input type="text" name="santri[{{$i}}][nama]" 
-                                                class="form-control query-input ps-4" 
-                                                placeholder="Cari Santri..." 
-                                                autocomplete="off"
-                                                list="santri-list"
+                                            <select name="santri[{{$i}}][nama_santri]" 
+                                                class="form-select query-select ps-3" 
+                                                onchange="autoFillSantriData(this)"
                                                 style="font-size: 0.85rem; border-radius: 8px; background-color: var(--input-bg); color: var(--text-main); width: 100%;">
-                                            <i class="bi bi-search position-absolute text-muted" style="left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.75rem;"></i>
+                                                <option value="">-- Pilih Santri --</option>
+                                                @foreach($santri_db_list as $santri_db)
+                                                    <option value="{{ $santri_db->nama_lengkap }}">
+                                                        {{ $santri_db->nama_lengkap }} (Kelas: {{ $santri_db->kelas->nama_kelas ?? '-' }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="d-flex align-items-center ps-1">
                                             <i class="bi bi-person-fill me-1" style="font-size: 0.7rem; color: var(--accent-blue);"></i>
@@ -405,96 +395,7 @@
         element.closest('.musyrif-chip').classList.add('active');
     }
 
-    // 2. Fungsi Tambah Musyrif (AJAX ke Database)
-    async function tambahMusyrif() {
-        const nameInput = document.getElementById('newMusyrifName');
-        const name = nameInput.value.trim();
-        
-        if (name === "") {
-            alert('Nama pengampu tidak boleh kosong!');
-            return;
-        }
-
-        try {
-            const response = await fetch('/musyrif/store', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({ nama: name })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                // Hapus pesan "Belum ada daftar"
-                const noData = document.getElementById('no-data');
-                if (noData) noData.remove();
-
-                // Tambahkan elemen baru ke UI
-                const container = document.getElementById('musyrifContainer');
-                const html = createMusyrifElement(result.data.id, result.data.nama);
-                container.insertAdjacentHTML('beforeend', html);
-                
-                nameInput.value = "";
-                alert('✅ Musyrif berhasil ditambahkan!');
-                
-                // Auto-pilih musyrif yang baru ditambahkan
-                pilihMusyrif(result.data.nama, container.lastElementChild.querySelector('.btn-nama'));
-            } else {
-                alert('❌ ' + (result.message || 'Gagal menambahkan musyrif'));
-            }
-        } catch (error) {
-            alert('❌ Terjadi kesalahan: ' + error.message);
-        }
-    }
-
-    // 3. Fungsi Edit Nama (AJAX ke Database)
-    async function editMusyrif(id, oldName) {
-        const newName = prompt("Edit Nama Pengampu:", oldName);
-        
-        if (newName === null || newName.trim() === "" || newName === oldName) {
-            return; // User cancel atau tidak ada perubahan
-        }
-
-        try {
-            const response = await fetch(`/musyrif/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({ nama: newName.trim() })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                // Update UI
-                const item = document.getElementById('item-' + id);
-                const btnNama = item.querySelector('.btn-nama');
-                btnNama.innerText = result.data.nama;
-                btnNama.setAttribute('onclick', `pilihMusyrif('${result.data.nama}', this)`);
-                
-                // Update juga di edit button
-                item.querySelector('.btn-outline-warning').setAttribute('onclick', `editMusyrif(${id}, '${result.data.nama}')`);
-                
-                alert('✅ Musyrif berhasil diupdate!');
-                
-                // Jika nama ini sedang aktif di tabel, update juga
-                if (btnNama.classList.contains('bg-primary')) {
-                    pilihMusyrif(result.data.nama, btnNama);
-                }
-            } else {
-                alert('❌ ' + (result.message || 'Gagal mengupdate musyrif'));
-            }
-        } catch (error) {
-            alert('❌ Terjadi kesalahan: ' + error.message);
-        }
-    }
-
-    // 4. AUTO-CALCULATION & LIVE PREVIEW (Fitur Baru)
+    // 2. AUTO-CALCULATION & LIVE PREVIEW (Fitur Baru)
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.santri-row');
         
@@ -554,22 +455,19 @@
         });
     });
 
-    // 5. AUTO-FILL MUSYRIF & SKOR TERAKHIR
+    // 3. AUTO-FILL MUSYRIF & SKOR TERAKHIR
     function autoFillSantriData(inputElement) {
         const val = inputElement.value;
         const list = document.getElementById('santriList');
         const options = list.options;
         
+        let found = false;
         for (let i = 0; i < options.length; i++) {
             if (options[i].value === val) {
+                found = true;
                 const musyrifName = options[i].getAttribute('data-musyrif');
                 
                 // Cari input musyrif di baris yang sama
-                // Structure: inputWrapper -> flex-grow-1 -> d-flex (row container)
-                // inputElement is inside .flex-grow-1
-                // The musyrif input is the NEXT sibling div -> input
-                
-                // Traverse DOM cleanly:
                 const container = inputElement.closest('td'); 
                 const musyrifInput = container.querySelector('.input-musyrif-field');
                 
@@ -608,63 +506,32 @@
                 break;
             }
         }
-    }
 
-    // 4. Fungsi Hapus (AJAX ke Database)
-    async function hapusMusyrif(id) {
-        if (!confirm('Hapus musyrif ini dari database? Data tidak dapat dikembalikan!')) {
-            return;
-        }
-
-        try {
-            const response = await fetch(`/musyrif/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                // Hapus dari UI
-                document.getElementById('item-' + id).remove();
+        if (!found) {
+            // Reset fields for new/empty selection
+            const row = inputElement.closest('tr');
+            if (row) {
+                const inputs = row.querySelectorAll('.score-input');
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.dispatchEvent(new Event('input'));
+                });
+                const noteInput = row.querySelector('input[name*="[catatan]"]');
+                if (noteInput) noteInput.value = '';
                 
-                // Jika tidak ada lagi musyrif, tampilkan pesan
-                const container = document.getElementById('musyrifContainer');
-                if (container.children.length === 0) {
-                    container.innerHTML = '<div id="no-data" class="ps-2 text-muted small italic">Belum ada daftar pengampu. Silakan tambahkan.</div>';
+                // Set musyrif to active chip or fallback to default
+                const activeMusyrifChip = document.querySelector('.musyrif-chip.active .btn-nama');
+                const container = inputElement.closest('td');
+                const musyrifInput = container.querySelector('.input-musyrif-field');
+                if (musyrifInput) {
+                    if (activeMusyrifChip) {
+                        musyrifInput.value = activeMusyrifChip.textContent.trim();
+                    } else {
+                        musyrifInput.value = "{{ Auth::user()->name }}";
+                    }
                 }
-                
-                alert('✅ Musyrif berhasil dihapus!');
-            } else {
-                alert('❌ ' + (result.message || 'Gagal menghapus musyrif'));
             }
-        } catch (error) {
-            alert('❌ Terjadi kesalahan: ' + error.message);
         }
     }
-
-    // Helper untuk membuat elemen HTML
-    function createMusyrifElement(id, name) {
-        return `
-            <div class="musyrif-chip" id="item-${id}" onclick="pilihMusyrif('${name}', this)" data-id="${id}">
-                <span class="btn-nama text-dark small">${name}</span>
-                <div class="chip-actions">
-                    <i class="bi bi-pencil-square text-warning" onclick="event.stopPropagation(); editMusyrif(${id}, '${name}')" style="cursor: pointer; font-size: 0.8rem;"></i>
-                    <i class="bi bi-trash text-danger" onclick="event.stopPropagation(); hapusMusyrif(${id})" style="cursor: pointer; font-size: 0.8rem;"></i>
-                </div>
-            </div>`;
-    }
-
-    // Event listener untuk Enter key pada input
-    document.getElementById('newMusyrifName')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            tambahMusyrif();
-        }
-    });
 </script>
-
-
 @endsection

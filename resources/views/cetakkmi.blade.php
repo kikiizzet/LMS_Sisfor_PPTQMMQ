@@ -33,6 +33,14 @@
         .footer-table td { border: none !important; text-align: center; padding: 5px 0; vertical-align: top; }
         
         .signature-box { margin-top: 40px; }
+        .watermark {
+            position: absolute;
+            top: 30%;
+            left: 15%;
+            width: 450px;
+            opacity: 0.04;
+            z-index: -1000;
+        }
     </style>
 </head>
 @php
@@ -70,20 +78,36 @@ if (!function_exists('terbilang_kmi')) {
         return trim($res);
     }
 }
+
+// Read parameters from request query string
+$semester = request('semester', $raport->semester);
+$tahunPelajaran = request('tahun_pelajaran', $raport->tahun_pelajaran);
+$tempatTanggalCetak = request('tempat_tanggal_cetak', $raport->tempat_tanggal_cetak);
 @endphp
 <body>
-    <div class="header">
-        <h3>LAPORAN PENILAIAN HASIL BELAJAR SANTRI</h3>
-        <h3>PENILAIAN AKHIR SEMESTER ( PAS )</h3>
-        <h4>PROGRAM KULLIYATUL MU'ALLIMIN WAL MU'ALLIMAT AL ISLAMIYAH ( KMI )</h4>
-        <h4>PONDOK PESANTREN TAHFIDZUL QUR'AN MAKKAH MADINATUL QUR'AN</h4>
-    </div>
+    <!-- Watermark Background -->
+    <img src="{{ public_path('images/logoo.png') }}" class="watermark" alt="Watermark Logo">
+
+    <table class="header-table" style="width: 100%; border: none !important; border-bottom: 2px solid black !important; margin-bottom: 15px; padding-bottom: 10px;">
+        <tr style="border: none !important;">
+            <td style="width: 12%; border: none !important; text-align: left; vertical-align: middle; padding: 0;">
+                <img src="{{ public_path('images/logoo.png') }}" style="width: 65px;" alt="Logo MMQ">
+            </td>
+            <td style="width: 88%; border: none !important; text-align: center; vertical-align: middle; padding: 0;">
+                <h3 style="margin: 0 0 2px 0; font-size: 11px; text-transform: uppercase; font-weight: bold; font-family: 'Arial', sans-serif;">LAPORAN PENILAIAN HASIL BELAJAR SANTRI</h3>
+                <h3 style="margin: 0 0 2px 0; font-size: 11px; text-transform: uppercase; font-weight: bold; font-family: 'Arial', sans-serif;">PENILAIAN AKHIR SEMESTER ( PAS )</h3>
+                <h4 style="margin: 0 0 2px 0; font-size: 9px; font-weight: normal; font-family: 'Arial', sans-serif;">PROGRAM KULLIYATUL MU'ALLIMIN WAL MU'ALLIMAT AL ISLAMIYAH ( KMI )</h4>
+                <h4 style="margin: 0; font-size: 10px; font-weight: bold; text-transform: uppercase; font-family: 'Arial', sans-serif;">PONDOK PESANTREN TAHFIDZUL QUR'AN MAKKAH MADINATUL QUR'AN</h4>
+                <p style="margin: 2px 0 0 0; font-size: 8px; font-style: italic; color: #333; font-family: 'Arial', sans-serif;">Pringkuku, Pacitan, Jawa Timur</p>
+            </td>
+        </tr>
+    </table>
 
     <table class="info-table">
         <tr>
             <td style="width: 15%;">Nama Pesantren</td>
             <td style="width: 1%;">:</td>
-            <td style="width: 34%;" class="fw-bold">DQ MAKKAH MADINATUL QUR'AN</td>
+            <td style="width: 34%;" class="fw-bold">MAKKAH MADINATUL QUR'AN</td>
             <td style="width: 15%;">Kelas</td>
             <td style="width: 1%;">:</td>
             <td style="width: 34%;">{{ $raport->kelas }}</td>
@@ -94,7 +118,7 @@ if (!function_exists('terbilang_kmi')) {
             <td class="fw-bold text-uppercase">{{ $raport->nama_santri }}</td>
             <td>Semester</td>
             <td>:</td>
-            <td>{{ $raport->semester }}</td>
+            <td>{{ $semester }}</td>
         </tr>
         <tr>
             <td>No. Induk</td>
@@ -102,7 +126,7 @@ if (!function_exists('terbilang_kmi')) {
             <td>{{ $raport->no_induk }}</td>
             <td>Tahun Pelajaran</td>
             <td>:</td>
-            <td>{{ $raport->tahun_pelajaran }}</td>
+            <td>{{ $tahunPelajaran }}</td>
         </tr>
     </table>
 
@@ -320,12 +344,22 @@ if (!function_exists('terbilang_kmi')) {
             <td style="width: 33%; vertical-align: top;">
                 <br>
                 Wali Kelas
-                <div style="height: 60px;"></div>
+                <div style="height: 60px; line-height: 60px; text-align: center;">
+                    @if(isset($guru) && $guru->ttd)
+                        <img src="{{ $guru->ttd }}" style="height: 55px; max-width: 150px; display: inline-block; vertical-align: middle;" alt="Ttd Wali Kelas">
+                    @else
+                        &nbsp;
+                    @endif
+                </div>
                 <strong>{{ $raport->wali_kelas_nama }}</strong><br>
                 NIP : -
             </td>
             <td style="width: 34%; vertical-align: top;">
-                Pacitan, {{ $raport->tempat_tanggal_cetak }}<br>
+                @if(Str::contains($tempatTanggalCetak, 'Pacitan'))
+                    {{ $tempatTanggalCetak }}<br>
+                @else
+                    Pacitan, {{ $tempatTanggalCetak }}<br>
+                @endif
                 Mengetahui,<br>
                 Kepala Madrasah
                 <div style="height: 48px;"></div>

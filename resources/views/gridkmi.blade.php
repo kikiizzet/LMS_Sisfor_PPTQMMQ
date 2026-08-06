@@ -253,20 +253,26 @@
             <form id="addSantriForm">
                 <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Nama Lengkap</label>
-                        <input type="text" name="nama_santri" required class="form-control form-control-minimal" placeholder="Contoh: Ahmad Abdullah">
+                        <label class="form-label small fw-bold">Pilih Santri</label>
+                        <select id="santriSelect" name="santri_id" required class="form-select form-control-minimal">
+                            <option value="">-- Pilih Santri --</option>
+                            @foreach($santri_db_list as $santri)
+                                <option value="{{ $santri->id }}" data-kelas="{{ $santri->kelas_id }}">
+                                    {{ $santri->nama_lengkap }} ({{ $santri->no_induk }})
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold">No Induk</label>
-                            <input type="text" name="no_induk" required class="form-control form-control-minimal" placeholder="B-202X-...">
-                        </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold">Kelas</label>
-                            <input type="text" name="kelas" required class="form-control form-control-minimal" placeholder="Contoh: 1-KMI">
+                            <select id="kelasSelect" name="kelas" required class="form-select form-control-minimal">
+                                <option value="">-- Pilih Kelas --</option>
+                                @foreach($kelas_list as $kelas)
+                                    <option value="{{ $kelas->nama_kelas }}">{{ $kelas->nama_kelas }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold">Semester</label>
                             <select name="semester" class="form-select form-control-minimal">
@@ -274,10 +280,10 @@
                                 <option value="Genap">Genap</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold">Tahun Pelajaran</label>
-                            <input type="text" name="tahun_pelajaran" required class="form-control form-control-minimal" value="2023/2024">
-                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Tahun Pelajaran</label>
+                        <input type="text" name="tahun_pelajaran" required class="form-control form-control-minimal" value="2023/2024">
                     </div>
                 </div>
                 <div class="modal-footer border-0 pt-0">
@@ -292,6 +298,23 @@
 <script>
     let raportData = @json($raport_kmis);
     const csrfToken = '{{ csrf_token() }}';
+    const santriDataList = @json($santri_db_list);
+    const kelasDataList = @json($kelas_list);
+
+    // Handle santri selection
+    document.getElementById('santriSelect').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const kelasId = selectedOption.getAttribute('data-kelas');
+        
+        // Set kelas dropdown based on santri's kelas_id
+        if (kelasId) {
+            const kelasSelect = document.getElementById('kelasSelect');
+            const selectedKelas = kelasDataList.find(k => k.id == kelasId);
+            if (selectedKelas) {
+                kelasSelect.value = selectedKelas.nama_kelas;
+            }
+        }
+    });
 
     document.getElementById('mapelSelector').addEventListener('change', function() {
         let selectedMapel = this.value;
@@ -337,14 +360,34 @@
         form.mental_kebersihan.value = r.mental_kebersihan || 'A';
         form.catatan_wali_kelas.value = r.catatan_wali_kelas || '';
         
-        // Handle Ekskul Array to String
+        // Handle Ekskul Array of Objects to String
         if (Array.isArray(r.ekstrakurikuler)) {
-            form.ekstrakurikuler.value = r.ekstrakurikuler.join(', ');
+            form.ekstrakurikuler.value = r.ekstrakurikuler.map(e => {
+                if (typeof e === 'object' && e !== null) {
+                    return `${e.nama || ''}: ${e.nilai !== undefined && e.nilai !== null ? e.nilai : 0}`;
+                }
+                return e;
+            }).join(', ');
         } else {
             form.ekstrakurikuler.value = r.ekstrakurikuler || '';
         }
         
+        // Tampilkan modal
         new bootstrap.Modal(document.getElementById('detailSantriModal')).show();
+
+        // Ambil data presensi terbaru secara real-time dari database presensi
+        if (r.no_induk) {
+            fetch(`/admin/santri/presensi-summary/${r.no_induk}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        form.sakit.value = data.sakit;
+                        form.izin.value = data.izin;
+                        form.ghoib.value = data.ghoib;
+                    }
+                })
+                .catch(err => console.error('Gagal mengambil data presensi terbaru:', err));
+        }
     }
 
     // Submit Detail Form

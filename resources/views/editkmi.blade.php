@@ -163,7 +163,17 @@
                     <div class="row g-4">
                         <div class="col-md-4">
                             <label class="form-label-custom">Nama Lengkap Santri</label>
-                            <input type="text" name="nama_santri" value="{{ $raport->nama_santri }}" required class="form-control form-control-minimal">
+                            <select name="nama_santri" required class="form-select form-control-minimal" id="kmi_santri_select">
+                                <option value="">-- Pilih Santri --</option>
+                                @foreach($santri_db_list as $s)
+                                    <option value="{{ $s->nama_lengkap }}" 
+                                        data-no-induk="{{ $s->no_induk }}"
+                                        data-kelas="{{ $s->kelas->nama_kelas ?? '' }}"
+                                        {{ $raport->nama_santri == $s->nama_lengkap ? 'selected' : '' }}>
+                                        {{ $s->nama_lengkap }} (Kelas: {{ $s->kelas->nama_kelas ?? '-' }})
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label-custom">Nomor Induk</label>
@@ -171,7 +181,12 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label-custom">Kelas / Jenjang</label>
-                            <input type="text" name="kelas" value="{{ $raport->kelas }}" required class="form-control form-control-minimal">
+                            <select name="kelas" required class="form-select form-control-minimal">
+                                <option value="">Pilih Kelas</option>
+                                @foreach($kelas_list as $k)
+                                    <option value="{{ $k->nama_kelas }}" {{ $raport->kelas == $k->nama_kelas ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label-custom">Semester</label>
@@ -314,10 +329,17 @@
                             @for($i = 0; $i < 5; $i++)
                             <div class="row g-2 mb-3">
                                 <div class="col-8">
-                                    <input type="text" name="ekstrakurikuler[{{ $i }}][nama]" value="{{ $eks[$i]['nama'] ?? '' }}" placeholder="Nama Kegiatan" class="form-control form-control-minimal text-sm p-2">
+                                    <select name="ekstrakurikuler[{{ $i }}][nama]" class="form-select form-control-minimal text-sm p-2">
+                                        <option value="">Pilih Kegiatan</option>
+                                        @foreach($ekskul_list as $eks_item)
+                                            <option value="{{ $eks_item->nama_ekstrakurikuler }}" {{ ($eks[$i]['nama'] ?? '') == $eks_item->nama_ekstrakurikuler ? 'selected' : '' }}>
+                                                {{ $eks_item->nama_ekstrakurikuler }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-4">
-                                    <input type="number" name="ekstrakurikuler[{{ $i }}][nilai]" value="{{ $eks[$i]['nilai'] ?? '' }}" placeholder="100" class="form-control form-control-minimal text-center p-2 fw-bold text-warning">
+                                    <input type="number" name="ekstrakurikuler[{{ $i }}][nilai]" value="{{ $eks[$i]['nilai'] ?? '' }}" placeholder="0" class="form-control form-control-minimal text-center p-2 fw-bold text-warning">
                                 </div>
                             </div>
                             @endfor
@@ -391,7 +413,12 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label-custom">Nama Wali Kelas</label>
-                            <input type="text" name="wali_kelas_nama" value="{{ $raport->wali_kelas_nama }}" required class="form-control form-control-minimal">
+                            <select name="wali_kelas_nama" required class="form-select form-control-minimal">
+                                <option value="">Pilih Wali Kelas</option>
+                                @foreach($guru_list as $g)
+                                    <option value="{{ $g->nama }}" {{ $raport->wali_kelas_nama == $g->nama ? 'selected' : '' }}>{{ $g->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label-custom">Nama Kepala Madrasah</label>
@@ -471,6 +498,69 @@
                 }
             }
         });
+    });
+
+    // Auto-fill KMI santri details (No Induk, Kelas, dan Presensi Kehadiran)
+    document.addEventListener('DOMContentLoaded', function() {
+        const kmiSantriSelect = document.getElementById('kmi_santri_select');
+        
+        function fetchPresensi(noInduk) {
+            if (!noInduk) return;
+            fetch(`/admin/santri/presensi-summary/${noInduk}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const sakitInput = document.querySelector('input[name="sakit"]');
+                        const izinInput = document.querySelector('input[name="izin"]');
+                        const ghoibInput = document.querySelector('input[name="ghoib"]');
+                        
+                        if (sakitInput) sakitInput.value = data.sakit;
+                        if (izinInput) izinInput.value = data.izin;
+                        if (ghoibInput) ghoibInput.value = data.ghoib;
+                    }
+                })
+                .catch(err => console.error('Gagal mengambil data presensi:', err));
+        }
+
+        if (kmiSantriSelect) {
+            // Trigger fetch presensi untuk santri yang sedang terpilih saat halaman pertama kali dibuka
+            const selectedOption = kmiSantriSelect.options[kmiSantriSelect.selectedIndex];
+            if (selectedOption && selectedOption.value !== "") {
+                const noInduk = selectedOption.getAttribute('data-no-induk') || '';
+                fetchPresensi(noInduk);
+            }
+
+            kmiSantriSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption && selectedOption.value !== "") {
+                    const noInduk = selectedOption.getAttribute('data-no-induk') || '';
+                    const kelas = selectedOption.getAttribute('data-kelas') || '';
+
+                    const noIndukInput = document.querySelector('input[name="no_induk"]');
+                    if (noIndukInput) noIndukInput.value = noInduk;
+                    
+                    const kelasSelect = document.querySelector('select[name="kelas"]');
+                    if (kelasSelect && kelas) {
+                        kelasSelect.value = kelas;
+                    }
+
+                    // Fetch presensi summary real-time
+                    fetchPresensi(noInduk);
+                } else {
+                    const noIndukInput = document.querySelector('input[name="no_induk"]');
+                    if (noIndukInput) noIndukInput.value = '';
+                    const kelasSelect = document.querySelector('select[name="kelas"]');
+                    if (kelasSelect) kelasSelect.value = '';
+
+                    const sakitInput = document.querySelector('input[name="sakit"]');
+                    const izinInput = document.querySelector('input[name="izin"]');
+                    const ghoibInput = document.querySelector('input[name="ghoib"]');
+                    if (sakitInput) sakitInput.value = 0;
+                    if (izinInput) izinInput.value = 0;
+                    if (ghoibInput) ghoibInput.value = 0;
+                }
+            });
+        }
     });
 </script>
 @endsection

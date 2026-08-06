@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donasi - MMQ Digital Pesantren Tahfidz</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logoo.png') }}">
+    <meta name="description" content="Dukung kami. Setiap kontribusi Anda sangat berarti untuk kemajuan Pesantren Tahfidz Al-Qur'an Makkah Madinatul Qur'an Pacitan.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Donasi - MMQ Digital Pesantren Tahfidz">
+    <meta property="og:description" content="Dukung kami. Setiap kontribusi Anda sangat berarti untuk kemajuan Pesantren Tahfidz Al-Qur'an Makkah Madinatul Qur'an Pacitan.">
+    <meta property="og:image" content="{{ asset('images/covermmq.png') }}">
+    <meta property="og:site_name" content="MMQ Digital">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Donasi - MMQ Digital Pesantren Tahfidz">
+    <meta property="twitter:description" content="Dukung kami. Setiap kontribusi Anda sangat berarti untuk kemajuan Pesantren Tahfidz Al-Qur'an Makkah Madinatul Qur'an Pacitan.">
+    <meta property="twitter:image" content="{{ asset('images/covermmq.png') }}">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -85,9 +102,9 @@
                         <div class="flex items-center gap-3">
                             <div class="flex-1">
                                 <p class="text-xs text-slate-400 mb-1">Nomor Rekening</p>
-                                <p class="text-xl font-mono font-bold text-slate-900">0067-0100-2686-309</p>
+                                <p class="text-xl font-mono font-bold text-slate-900">0067-0100-2447-569</p>
                             </div>
-                            <button onclick="copyToClipboard('0067-0100-2686-309', 'bri')" 
+                            <button onclick="copyToClipboard('0067-0100-2447-569', 'bri')" 
                                     class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-sm font-medium">
                                 <i class="bi bi-clipboard" id="icon-bri"></i>
                             </button>
@@ -128,15 +145,10 @@
                 <div class="mt-12 pt-12 border-t border-slate-100">
                     <p class="text-sm text-slate-500 text-center mb-6">Butuh bantuan? Hubungi kami</p>
                     <div class="flex flex-wrap justify-center gap-4">
-                        <a href="https://wa.me/62822458058775" 
+                        <a href="https://wa.me/6282245805875" 
                            class="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition font-medium">
                             <i class="bi bi-whatsapp text-lg"></i>
-                            <span>Ustadz Syarif</span>
-                        </a>
-                        <a href="https://wa.me/6287758046321" 
-                           class="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition font-medium">
-                            <i class="bi bi-whatsapp text-lg"></i>
-                            <span>Ustadz Zaidi</span>
+                            <span>Ustadz Sarip</span>
                         </a>
                     </div>
                 </div>

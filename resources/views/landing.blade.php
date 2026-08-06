@@ -4,7 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Pondok Pesantren Tahfidz Al-Qur'an dengan bimbingan ustadz berpengalaman, fasilitas modern, dan lingkungan yang asri untuk menemani perjalanan menghafal Al-Qur'an.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Pondok Pesantren Tahfidz Al-Qur'an MMQ Digital">
+    <meta property="og:description" content="Pondok Pesantren Tahfidz Al-Qur'an dengan bimbingan ustadz berpengalaman, fasilitas modern, dan lingkungan yang asri untuk menemani perjalanan menghafal Al-Qur'an.">
+    <meta property="og:image" content="{{ asset('images/covermmq.png') }}">
+    <meta property="og:site_name" content="MMQ Digital">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Pondok Pesantren Tahfidz Al-Qur'an MMQ Digital">
+    <meta property="twitter:description" content="Pondok Pesantren Tahfidz Al-Qur'an dengan bimbingan ustadz berpengalaman, fasilitas modern, dan lingkungan yang asri untuk menemani perjalanan menghafal Al-Qur'an.">
+    <meta property="twitter:image" content="{{ asset('images/covermmq.png') }}">
+
     <title>Pondok Pesantren Tahfidz Al-Qur'an - Membentuk Generasi Penghafal Al-Qur'an</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logoo.png') }}">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -511,6 +529,7 @@
                 <a href="#program" class="text-sm font-medium hover:text-islamic-gold-400 transition-colors">Program</a>
                 <a href="#fasilitas" class="text-sm font-medium hover:text-islamic-gold-400 transition-colors">Fasilitas</a>
                 <a href="#testimoni" class="text-sm font-medium hover:text-islamic-gold-400 transition-colors">Testimoni</a>
+                <a href="#faq" class="text-sm font-medium hover:text-islamic-gold-400 transition-colors">FAQ</a>
                 <a href="#kontak" class="text-sm font-medium hover:text-islamic-gold-400 transition-colors">Kontak</a>
                 <a href="#daftar" class="bg-islamic-green-700 hover:bg-islamic-green-800 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg hover:shadow-islamic-green-200/50 border border-white/10">
                     Daftar Santri
@@ -552,6 +571,12 @@
                 <i class="bi bi-chat-quote"></i>
             </div>
             <span>Testimoni</span>
+        </a>
+        <a href="#faq" class="text-lg font-bold py-3 border-b border-emerald-50 text-islamic-green-900 flex items-center gap-4 group" onclick="toggleMobileMenu()">
+            <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-islamic-green-600 group-hover:bg-islamic-green-600 group-hover:text-white transition-all">
+                <i class="bi bi-question-circle"></i>
+            </div>
+            <span>FAQ</span>
         </a>
         <a href="#kontak" class="text-lg font-bold py-3 border-b border-emerald-50 text-islamic-green-900 flex items-center gap-4 group" onclick="toggleMobileMenu()">
             <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-islamic-green-600 group-hover:bg-islamic-green-600 group-hover:text-white transition-all">
@@ -674,7 +699,12 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-lg text-slate-900 mb-1">Visi Kami</h4>
-                                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">Terwujudnya generasi Qur'ani yang unggul, mandiri, dan berakhlak mulia di era global.</p>
+                                <ol class="text-sm sm:text-base text-slate-600 list-decimal pl-4 space-y-2">
+                                    <li>Sebagai Lembaga Pendidikan Pencetak Kader Pemimpin Umat Yang Berakhlaqul Karimah</li>
+                                    <li>Tempat Tholabul Ilmi Al-Quran dan Ilmu Sains</li>
+                                    <li>Lembaga Pendidikan Bilingual (Arab dan Inggris) yang Berbasis Kurikulum KMI Gontor</li>
+                                    <li>Al-Quran Sebagai Pedoman Hidup dan Sains Penunjang Hidup</li>
+                                </ol>
                             </div>
                         </div>
                         <div class="flex gap-4 sm:gap-5">
@@ -683,20 +713,12 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-lg text-slate-900 mb-1">Misi Kami</h4>
-                                <ul class="text-sm sm:text-base text-slate-600 space-y-2">
-                                    <li class="flex items-start gap-2">
-                                        <i class="bi bi-check2 text-islamic-green-600 font-bold"></i>
-                                        <span>Membimbing santri menghafal 30 juz dengan lancar</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="bi bi-check2 text-islamic-green-600 font-bold"></i>
-                                        <span>Membiasakan karakter islami dalam keseharian</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="bi bi-check2 text-islamic-green-600 font-bold"></i>
-                                        <span>Penguasaan bahasa Arab dan keilmuan kontemporer</span>
-                                    </li>
-                                </ul>
+                                <ol class="text-sm sm:text-base text-slate-600 list-decimal pl-4 space-y-2">
+                                    <li>Membentuk Generasi Islam yang Berakhlaqul Karimah dan Unggul</li>
+                                    <li>Membentuk Generasi Qur'an yang Hafidz dan Hafidzah</li>
+                                    <li>Menjadikan Bahasa Arab dan Inggris Sebagai Bahasa Harian</li>
+                                    <li>Menjadikan Pelajaran IPA sebagai Unggulan Dengan Media Pembelajaran Smart digital</li>
+                                </ol>
                             </div>
                         </div>
                     </div>
@@ -954,6 +976,36 @@
         </div>
     </section>
 
+    <!-- FAQ SECTION -->
+    @if($publishedQuestions && $publishedQuestions->count() > 0)
+    <section id="faq" class="py-16 sm:py-24 bg-slate-50 border-t border-slate-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+                <span class="text-islamic-gold-600 font-bold tracking-widest text-xs sm:text-sm uppercase">Tanya Jawab</span>
+                <h2 class="text-2xl sm:text-5xl font-bold text-islamic-green-900 mt-4 mb-6">Pertanyaan Yang Sering Diajukan</h2>
+                <div class="h-1 w-20 bg-islamic-gold-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <div class="space-y-4">
+                    @foreach($publishedQuestions as $q)
+                    <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-slate-900 group-hover:text-islamic-green-700 transition-colors">
+                            <span class="text-base sm:text-lg text-left">{{ $q->question }}</span>
+                            <span class="transition group-open:rotate-180 bg-slate-50 text-islamic-green-600 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="p-6 pt-0 text-slate-600 leading-relaxed text-sm sm:text-base border-t border-slate-50 mt-2">
+                            {!! nl2br(e($q->answer)) !!}
+                        </div>
+                    </details>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
 
     <!-- CTA / REGISTRATION SECTION -->
     <section id="daftar" class="py-16 sm:py-24 relative overflow-hidden bg-slate-50">
@@ -976,11 +1028,11 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center" data-aos="fade-up" data-aos-delay="200">
-                        <a href="https://wa.me/62812345678" class="bg-white text-islamic-green-900 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-bold text-base sm:text-lg hover:bg-emerald-50 transition-all flex items-center justify-center gap-3 shadow-xl">
+                        <a href="https://wa.me/+6282245805875" class="bg-white text-islamic-green-900 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-bold text-base sm:text-lg hover:bg-emerald-50 transition-all flex items-center justify-center gap-3 shadow-xl">
                             <i class="bi bi-whatsapp text-xl sm:text-2xl"></i>
                             Daftar via WhatsApp
                         </a>
-                        <a href="tel:+62812345678" class="border-2 border-white/30 hover:bg-white/10 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-bold text-base sm:text-lg transition-all flex items-center justify-center gap-3 backdrop-blur-sm">
+                        <a href="tel:+6282245805875" class="border-2 border-white/30 hover:bg-white/10 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-bold text-base sm:text-lg transition-all flex items-center justify-center gap-3 backdrop-blur-sm">
                             <i class="bi bi-telephone text-xl sm:text-2xl"></i>
                             Hubungi Kami
                         </a>
@@ -1074,13 +1126,13 @@
                         Lembaga pendidikan Al-Qur'an terpercaya yang berfokus pada kualitas hafalan dan karakter santri yang berakhlakul karimah.
                     </p>
                     <div class="flex gap-4 justify-center lg:justify-start">
-                        <a href="#" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-islamic-gold-500 hover:border-islamic-gold-500 hover:scale-110 transition-all">
+                        <a href="https://www.facebook.com/share/18gBAyAy8Q/" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-islamic-gold-500 hover:border-islamic-gold-500 hover:scale-110 transition-all">
                             <i class="bi bi-facebook text-lg sm:text-xl"></i>
                         </a>
                         <a href="https://www.instagram.com/pptqmmq_pacitan" target="_blank" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-islamic-gold-500 hover:border-islamic-gold-500 hover:scale-110 transition-all">
                             <i class="bi bi-instagram text-lg sm:text-xl"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-islamic-gold-500 hover:border-islamic-gold-500 hover:scale-110 transition-all">
+                        <a href="https://youtube.com/@ponpesmmqwaqaf?si=2igj6jBHP3LKwDT1" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-islamic-gold-500 hover:border-islamic-gold-500 hover:scale-110 transition-all">
                             <i class="bi bi-youtube text-lg sm:text-xl"></i>
                         </a>
                     </div>
@@ -1090,9 +1142,10 @@
                     <h5 class="text-lg font-bold mb-6 sm:mb-8 text-islamic-gold-400">Tautan Cepat</h5>
                     <ul class="space-y-3 sm:space-y-4 text-emerald-100/60 text-sm sm:text-base">
                         <li><a href="#tentang" class="hover:text-islamic-gold-400 transition-colors">Tentang Kami</a></li>
-                        <li><a href="#program" class="hover:text-islamic-gold-400 transition-colors">Program Unggulan</a></li>
+                        <li><a href="#program" class="hover:text-islamic-gold-400 transition-colors">Program Utama</a></li>
                         <li><a href="#fasilitas" class="hover:text-islamic-gold-400 transition-colors">Fasilitas Pondok</a></li>
                         <li><a href="#testimoni" class="hover:text-islamic-gold-400 transition-colors">Suara Santri</a></li>
+                        <li><a href="#faq" class="hover:text-islamic-gold-400 transition-colors">Tanya Jawab / FAQ</a></li>
                         <li><a href="{{ route('login') }}" class="hover:text-islamic-gold-400 transition-colors flex items-center gap-2 justify-center lg:justify-start"><i class="bi bi-shield-lock"></i> Area Admin</a></li>
                     </ul>
                 </div>
@@ -1110,7 +1163,7 @@
                             <div class="flex-shrink-0 w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-islamic-gold-500">
                                 <i class="bi bi-whatsapp"></i>
                             </div>
-                            <span class="text-emerald-100/60 text-sm">+62 812 3456 7890</span>
+                            <span class="text-emerald-100/60 text-sm">+6282245805875</span>
                         </li>
                         <li class="flex flex-col lg:flex-row items-center lg:items-start gap-3 lg:gap-4">
                             <div class="flex-shrink-0 w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-islamic-gold-500">
@@ -1314,7 +1367,7 @@
     </script>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/62822444751558?text=Assalamu%27alaikum%20Wr.%20Wb.%20Saya%20ingin%20bertanya%20tentang%20pendaftaran%20santri%20di%20MMQ%20Digital%20Pesantren%20Tahfidz" 
+    <a href="https://wa.me/6282245805875?text=Assalamu%27alaikum%20Wr.%20Wb.%20Saya%20ingin%20bertanya%20tentang%20pendaftaran%20santri%20di%20MMQ%20Digital%20Pesantren%20Tahfidz" 
        class="whatsapp-float" 
        target="_blank"
        aria-label="Chat WhatsApp">

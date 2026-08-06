@@ -6,6 +6,23 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/logoo.png') }}">
+        <meta name="description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="{{ config('app.name', 'Laravel') }}">
+        <meta property="og:description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
+        <meta property="og:image" content="{{ asset('images/logoo.png') }}">
+        <meta property="og:site_name" content="MMQ Digital">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary">
+        <meta property="twitter:url" content="{{ url()->current() }}">
+        <meta property="twitter:title" content="{{ config('app.name', 'Laravel') }}">
+        <meta property="twitter:description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
+        <meta property="twitter:image" content="{{ asset('images/logoo.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

@@ -18,18 +18,24 @@ class RaportKmiController extends Controller
 
     public function create()
     {
-        return view('inputkmi');
+        $kelas_list = \App\Models\Kelas::all();
+        $ekskul_list = \App\Models\Ekstrakurikuler::where('is_active', true)->get();
+        $guru_list = \App\Models\Guru::where('is_active', true)->get();
+        $santri_db_list = \App\Models\Santri::where('status', 'Aktif')->orderBy('nama_lengkap')->get();
+        return view('inputkmi', compact('kelas_list', 'ekskul_list', 'guru_list', 'santri_db_list'));
     }
 
     public function grid()
     {
         $raport_kmis = RaportKmi::orderBy('id', 'asc')->get();
+        $santri_db_list = \App\Models\Santri::where('status', 'Aktif')->orderBy('nama_lengkap')->get();
+        $kelas_list = \App\Models\Kelas::all();
         $mapels = [
             'nahwu', 'mutholaah', 'shorof', 'mahfudzat', 'reading', 'dictation', 
             'mufrodzat', 'vocabularies', 'akhlak_lil_banin', 'durusuttafsir', 
             'ushul_fiqh', 'arbain_nawawi', 'bahasa_inggris', 'bahasa_arab', 'praktik_ibadah'
         ];
-        return view('gridkmi', compact('raport_kmis', 'mapels'));
+        return view('gridkmi', compact('raport_kmis', 'santri_db_list', 'kelas_list', 'mapels'));
     }
 
     public function store(Request $request)
@@ -42,24 +48,34 @@ class RaportKmiController extends Controller
     public function storeAjax(Request $request)
     {
         $request->validate([
-            'nama_santri' => 'required',
-            'no_induk' => 'required',
+            'santri_id' => 'required|exists:santris,id',
             'kelas' => 'required',
             'semester' => 'required',
             'tahun_pelajaran' => 'required'
         ]);
 
+        // Get santri data from database
+        $santri = \App\Models\Santri::findOrFail($request->santri_id);
+        
         // Ambil default wali kelas & kepala madrasah dari record terakhir agar tidak error DB
         $lastRecord = RaportKmi::latest()->first();
         $wali = $lastRecord ? $lastRecord->wali_kelas_nama : 'Belum Diisi';
         $kepala = $lastRecord ? $lastRecord->kepala_madrasah_nama : 'H. Muhammad Ulil Albab, S.H.I';
 
+        // Hitung total ketidakhadiran dari presensi secara real-time
+        $sakit = \App\Models\Presensi::where('santri_id', $santri->id)->where('status', 'Sakit')->count();
+        $izin = \App\Models\Presensi::where('santri_id', $santri->id)->where('status', 'Izin')->count();
+        $ghoib = \App\Models\Presensi::where('santri_id', $santri->id)->where('status', 'Alfa')->count();
+
         $raport = RaportKmi::create([
-            'nama_santri' => $request->nama_santri,
-            'no_induk' => $request->no_induk,
+            'nama_santri' => $santri->nama_lengkap,
+            'no_induk' => $santri->no_induk,
             'kelas' => $request->kelas,
             'semester' => $request->semester,
             'tahun_pelajaran' => $request->tahun_pelajaran,
+            'sakit' => $sakit,
+            'izin' => $izin,
+            'ghoib' => $ghoib,
             'nilai_mapel' => [],
             'ekstrakurikuler' => [],
             'wali_kelas_nama' => $wali,
@@ -75,7 +91,11 @@ class RaportKmiController extends Controller
     public function edit($id)
     {
         $raport = RaportKmi::findOrFail($id);
-        return view('editkmi', compact('raport'));
+        $kelas_list = \App\Models\Kelas::all();
+        $ekskul_list = \App\Models\Ekstrakurikuler::where('is_active', true)->get();
+        $guru_list = \App\Models\Guru::where('is_active', true)->get();
+        $santri_db_list = \App\Models\Santri::where('status', 'Aktif')->orderBy('nama_lengkap')->get();
+        return view('editkmi', compact('raport', 'kelas_list', 'ekskul_list', 'guru_list', 'santri_db_list'));
     }
 
     public function update(Request $request, $id)
@@ -95,8 +115,9 @@ class RaportKmiController extends Controller
     public function cetak($id)
     {
         $raport = RaportKmi::findOrFail($id);
+        $guru = \App\Models\Guru::where('nama', $raport->wali_kelas_nama)->first();
         // Menyiapkan PDF dengan paper A4 Portrait (sesuai gambar yang memanjang ke bawah)
-        $pdf = Pdf::loadView('cetakkmi', compact('raport'))
+        $pdf = Pdf::loadView('cetakkmi', compact('raport', 'guru'))
                   ->setPaper('a4', 'portrait');
 
         return $pdf->stream("Raport-KMI-{$raport->nama_santri}.pdf");
@@ -445,10 +466,28 @@ class RaportKmiController extends Controller
     {
         $raport = RaportKmi::findOrFail($request->id);
         
-        // Handle Ekskul String to Array
+        // Handle Ekskul String to Array of Objects
         $ekskul = [];
         if ($request->has('ekstrakurikuler') && !empty($request->ekstrakurikuler)) {
-            $ekskul = array_map('trim', explode(',', $request->ekstrakurikuler));
+            $parts = explode(',', $request->ekstrakurikuler);
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if (empty($part)) continue;
+                
+                if (strpos($part, ':') !== false) {
+                    list($nama, $nilai) = explode(':', $part, 2);
+                    $nilaiClean = trim($nilai);
+                    $ekskul[] = [
+                        'nama' => trim($nama),
+                        'nilai' => $nilaiClean !== '' ? (int)$nilaiClean : 0
+                    ];
+                } else {
+                    $ekskul[] = [
+                        'nama' => $part,
+                        'nilai' => 0
+                    ];
+                }
+            }
         }
 
         $raport->update([

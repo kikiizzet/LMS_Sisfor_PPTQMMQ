@@ -20,7 +20,14 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Nama Musyrif</label>
-                                <input type="text" name="musyrif" class="form-control" value="{{ $santri->musyrif }}" required>
+                                <select name="musyrif" class="form-select" required>
+                                    <option value="">-- Pilih Musyrif --</option>
+                                    @foreach($gurus as $guru)
+                                        <option value="{{ $guru->nama }}" {{ $santri->musyrif == $guru->nama ? 'selected' : '' }}>
+                                            {{ $guru->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             
                             <div class="col-md-3">

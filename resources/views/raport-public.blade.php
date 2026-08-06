@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raport {{ $namaSantri }} — MMQ Digital</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logoo.png') }}">
+    <meta name="description" content="Laporan penilaian Tahfidz & KMI Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan untuk santri {{ $namaSantri }}.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Raport {{ $namaSantri }} — MMQ Digital">
+    <meta property="og:description" content="Laporan penilaian Tahfidz & KMI Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan untuk santri {{ $namaSantri }}.">
+    <meta property="og:image" content="{{ asset('images/logoo.png') }}">
+    <meta property="og:site_name" content="MMQ Digital">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Raport {{ $namaSantri }} — MMQ Digital">
+    <meta property="twitter:description" content="Laporan penilaian Tahfidz & KMI Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan untuk santri {{ $namaSantri }}.">
+    <meta property="twitter:image" content="{{ asset('images/logoo.png') }}">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>

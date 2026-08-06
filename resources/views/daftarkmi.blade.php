@@ -179,7 +179,7 @@
                             </td>
                             <td class="pe-3">
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('raport-kmi.cetak', $raport->id) }}" target="_blank" class="btn-action btn-print" title="Cetak" style="width: 30px; height: 30px;">
+                                    <a href="#" onclick="openPrintModalKmi({{ $raport->id }}, '{{ addslashes($raport->nama_santri) }}', '{{ $raport->semester }}', '{{ $raport->tahun_pelajaran }}', '{{ addslashes($raport->tempat_tanggal_cetak) }}')" class="btn-action btn-print" title="Cetak" style="width: 30px; height: 30px;">
                                         <i class="bi bi-printer" style="font-size: 0.8rem;"></i>
                                     </a>
                                     <a href="{{ route('raport-kmi.edit', $raport->id) }}" class="btn-action btn-edit" title="Edit" style="width: 30px; height: 30px;">
@@ -209,6 +209,47 @@
     </div>
 </div>
 
+<!-- Modal Konfirmasi Cetak KMI -->
+<div class="modal fade" id="printModalKmi" tabindex="-1" aria-labelledby="printModalKmiLabel" aria-hidden="true" style="border-radius: 16px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow" style="border-radius: 16px; background: var(--glass-bg, #ffffff);">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="printModalKmiLabel">Konfirmasi Parameter Cetak</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="printFormKmi" method="GET" target="_blank" onsubmit="bootstrap.Modal.getInstance(document.getElementById('printModalKmi')).hide();">
+                <div class="modal-body py-3">
+                    <p class="text-muted small mb-3">Sesuaikan parameter cetak rapor KMI untuk santri <strong id="modalSantriNameKmi" class="text-primary"></strong> sebelum mencetak.</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Semester</label>
+                        <select name="semester" id="modalKmiSemester" class="form-select" style="border-radius: 10px;">
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Tahun Pelajaran</label>
+                        <input type="text" name="tahun_pelajaran" id="modalKmiTahunPelajaran" class="form-control" style="border-radius: 10px;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Tempat & Tanggal Cetak</label>
+                        <input type="text" name="tempat_tanggal_cetak" id="modalKmiTempatTanggalCetak" class="form-control" style="border-radius: 10px;">
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 10px; font-weight: 600;">Batal</button>
+                    <button type="submit" class="btn btn-primary text-white" style="border-radius: 10px; font-weight: 600;">
+                        <i class="bi bi-printer me-1"></i> Buka Rapor & Cetak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     // Pencarian Sederhana
     document.getElementById('searchInput').addEventListener('keyup', function() {
@@ -224,6 +265,22 @@
             }
         });
     });
+
+    // Buka Modal Cetak Rapor KMI
+    function openPrintModalKmi(id, namaSantri, semester, tahunPelajaran, tempatTanggalCetak) {
+        document.getElementById('modalSantriNameKmi').innerText = namaSantri;
+        
+        // Isi input modal dengan data default dari baris yang bersangkutan
+        document.getElementById('modalKmiSemester').value = semester || 'Ganjil';
+        document.getElementById('modalKmiTahunPelajaran').value = tahunPelajaran || '2023/2024';
+        document.getElementById('modalKmiTempatTanggalCetak').value = tempatTanggalCetak || 'Pacitan';
+        
+        const form = document.getElementById('printFormKmi');
+        form.action = `/raport-kmi/cetak/${id}`;
+        
+        const myModal = new bootstrap.Modal(document.getElementById('printModalKmi'));
+        myModal.show();
+    }
 </script>
 @endsection
 

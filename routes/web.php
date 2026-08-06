@@ -123,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit-santri/{id}', [RaportController::class, 'edit']);
     Route::put('/update-santri/{id}', [RaportController::class, 'update']);
     Route::delete('/hapus-santri/{id}', [RaportController::class, 'destroy']);
+    Route::delete('/hapus-semua-tahfidz', [RaportController::class, 'truncate'])->name('raport.truncate');
 
     // Halaman Cetak
     Route::get('/cetak/{id}', [RaportController::class, 'cetak'])->name('raport.cetak');
@@ -170,4 +171,20 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/penghargaan', \App\Http\Controllers\PenghargaanController::class)->names('admin.penghargaan')->except(['show']);
     Route::resource('/admin/testimoni', \App\Http\Controllers\TestimoniController::class)->names('admin.testimoni')->except(['show']);
     Route::resource('/admin/donasi', \App\Http\Controllers\DonasiController::class)->names('admin.donasi')->except(['show']);
+
+    // Master Data Management Routes
+    Route::resource('/admin/guru', \App\Http\Controllers\GuruController::class)->names('admin.guru')->except(['show']);
+    Route::resource('/admin/kelas', \App\Http\Controllers\KelasController::class)->names('admin.kelas')->except(['show']);
+    Route::resource('/admin/ekstrakurikuler', \App\Http\Controllers\EkstrakurikulerController::class)->names('admin.ekstrakurikuler')->except(['show']);
+    Route::resource('/admin/teaching', \App\Http\Controllers\TeachingController::class)->names('admin.teaching')->except(['show']);
+    Route::resource('/admin/santri', \App\Http\Controllers\SantriController::class)->names('admin.santri')->except(['show']);
+    Route::get('/admin/mutasi-kelas', [\App\Http\Controllers\MutasiKelasController::class, 'index'])->name('admin.mutasi-kelas.index');
+    Route::post('/admin/mutasi-kelas/proses', [\App\Http\Controllers\MutasiKelasController::class, 'proses'])->name('admin.mutasi-kelas.proses');
+
+    // Presensi/Attendance Management Routes
+    Route::get('/admin/presensi', [\App\Http\Controllers\PresensiController::class, 'index'])->name('admin.presensi.index');
+    Route::post('/admin/presensi', [\App\Http\Controllers\PresensiController::class, 'store'])->name('admin.presensi.store');
+    Route::get('/admin/presensi/rekap', [\App\Http\Controllers\PresensiController::class, 'rekap'])->name('admin.presensi.rekap');
+    Route::post('/admin/presensi/update-single', [\App\Http\Controllers\PresensiController::class, 'updateSingle'])->name('admin.presensi.update-single');
+    Route::get('/api/presensi/summary/{no_induk}', [\App\Http\Controllers\PresensiController::class, 'getSummary'])->name('api.presensi.summary');
 });

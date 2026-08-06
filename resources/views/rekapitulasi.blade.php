@@ -38,23 +38,24 @@
     .share-btn-copy { background: #0ea5e9; color: white; border: none; }
     .share-btn-copy:hover { background: #0284c7; color: white; }
 </style>
-<div class="container-fluid px-3">
-    <!-- Header Section -->
-    <div class="row mb-4 align-items-center text-center text-md-start">
-        <div class="col-md-7 mb-3 mb-md-0">
-            <h3 class="fw-bold text-dark mb-1" style="font-size: clamp(1.2rem, 4vw, 1.75rem);">Rekapitulasi Nilai Santri</h3>
-            <p class="text-muted small mb-0">Laporan gabungan capaian Tahfidz dan KMI.</p>
-            <a href="{{ route('raport-kmi.grid') }}" class="btn btn-warning btn-sm fw-bold px-3 py-2 rounded-pill shadow-sm mt-3 animate-pulse">
-                <i class="bi bi-grid-3x3-gap-fill me-2"></i> Mode Smart Grid (Input Cepat)
-            </a>
-        </div>
-        <div class="col-md-5">
-            <div class="bg-white p-2 rounded-pill shadow-sm border d-flex align-items-center">
-                <i class="bi bi-search ms-2 text-muted"></i>
-                <input type="text" id="searchInput" class="form-control border-0 bg-transparent shadow-none" placeholder="Cari nama..." style="width: 100%;">
+<div class="content-wrapper">
+    <div class="container-lg mt-4 mb-5">
+        <!-- Header Section -->
+        <div class="page-header flex-column flex-md-row align-items-start align-items-md-center gap-3">
+            <div class="page-header-left">
+                <h1><i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>Rekapitulasi Nilai Santri</h1>
+                <p>Laporan gabungan capaian Tahfidz dan KMI.</p>
+                <a href="{{ route('raport-kmi.grid') }}" class="btn btn-warning btn-sm fw-bold px-3 py-2 rounded-pill shadow-sm mt-2 d-inline-flex align-items-center" style="font-size: 0.75rem;">
+                    <i class="bi bi-grid-3x3-gap-fill me-2"></i> Mode Smart Grid (Input Cepat)
+                </a>
+            </div>
+            <div class="ms-md-auto col-12 col-md-4">
+                <div class="search-container">
+                    <i class="bi bi-search search-icon-inside"></i>
+                    <input type="text" id="searchInput" class="form-control ps-5" placeholder="Cari nama santri..." style="border-radius: 12px;">
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- Stats Row -->
     <div class="row g-4 mb-4">
@@ -100,9 +101,10 @@
     </div>
 
     <!-- Main Table Card -->
-    <div class="card border-0 shadow-sm overflow-hidden">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" id="rekapTable">
+    <div class="card card-main overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-premium align-middle mb-0" id="rekapTable">
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-3 py-3 text-uppercase small fw-bold text-muted d-none d-md-table-cell" style="width: 50px;">No</th>
@@ -173,6 +175,8 @@
             </table>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <!-- Share Link Modal -->
@@ -264,5 +268,3 @@
     }
 </script>
 @endsection
-x
-// test

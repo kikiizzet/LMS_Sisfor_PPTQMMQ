@@ -12,8 +12,8 @@
             top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 0.08;
-            width: 500px;
+            opacity: 0.05;
+            width: 350px;
             z-index: -1;
         }
 
@@ -45,14 +45,27 @@
 
         @media print { 
             .no-print { display: none; } 
-            body { padding: 0; margin: 0; }
-            @page { margin: 1cm; }
+            @page { 
+                size: auto; 
+                margin: 0; 
+            }
+            body { 
+                margin: 1.5cm; 
+                padding: 0; 
+            }
         }
     </style>
 </head>
 <body>
 
     @php
+        // Read parameters from request query string
+        $semester = request('semester', 'Ganjil');
+        $tahunAjaran = request('tahun_ajaran', '2025/2026');
+        $halaqoh = request('halaqoh', 'Tahfidz');
+        $kkm = request('kkm', '60');
+        $tanggalCetak = request('tanggal_cetak', 'Pringkuku, 20 Desember 2025');
+
         // Fungsi Penentu Predikat Berdasarkan Catatan
         function getPredikat($nilai) {
             if ($nilai >= 90) return 'Mumtaz';         // 90-100
@@ -70,30 +83,30 @@
         🖨️ CETAK RAPOR / SIMPAN PDF
     </button>
 
-    <img src="https://via.placeholder.com/500?text=MMQ+PACITAN" class="watermark" alt="watermark">
+    <img src="{{ asset('images/logoo.png') }}" class="watermark" alt="watermark">
 
     <div class="header-container">
-        <img src="https://via.placeholder.com/100" class="logo" alt="logo-kiri">
+        <img src="{{ asset('images/logoo.png') }}" class="logo" alt="logo-kiri">
         <div class="kop-text">
             <h3>LAPORAN PENILAIAN TAHFIDZ</h3>
             <h2>PONDOK PESANTREN TAHFIDZUL QUR'AN<br>MAKKAH MADINATUL QUR'AN</h2>
             <p style="margin: 0; font-size: 12px;">Pringkuku, Pacitan, Jawa Timur</p>
         </div>
-        <img src="https://via.placeholder.com/100" class="logo" alt="logo-kanan">
+        <div style="width: 80px;"></div>
     </div>
 
     <table class="table-identitas">
         <tr>
             <td width="18%">Nama Santri</td><td width="32%">: <strong>{{ strtoupper($rapor->nama_santri) }}</strong></td>
-            <td width="18%">Semester</td><td width="32%">: Ganjil</td>
+            <td width="18%">Semester</td><td width="32%">: {{ $semester }}</td>
         </tr>
         <tr>
             <td>Musyrif</td><td>: {{ $rapor->musyrif }}</td>
-            <td>Tahun Ajaran</td><td>: 2025/2026</td>
+            <td>Tahun Ajaran</td><td>: {{ $tahunAjaran }}</td>
         </tr>
         <tr>
-            <td>Halaqoh</td><td>: Tahfidz</td>
-            <td>KKM</td><td>: 60</td>
+            <td>Halaqoh</td><td>: {{ $halaqoh }}</td>
+            <td>KKM</td><td>: {{ $kkm }}</td>
         </tr>
     </table>
 
@@ -145,13 +158,20 @@
         <table class="ttd-table">
             <tr>
                 <td width="50%">Mengetahui,</td>
-                <td width="50%">Pringkuku, 20 Desember 2025</td>
+                <td width="50%">{{ $tanggalCetak }}</td>
             </tr>
             <tr>
                 <td>Wali Santri</td>
                 <td>Ketua Koordinator Tahfidz</td>
             </tr>
-            <tr class="ttd-space"><td></td><td></td></tr>
+            <tr class="ttd-space">
+                <td></td>
+                <td style="text-align: center; vertical-align: middle; height: 70px;">
+                    @if(isset($guru) && $guru->ttd)
+                        <img src="{{ $guru->ttd }}" style="height: 65px; max-width: 180px; display: inline-block;" alt="Ttd Musyrif">
+                    @endif
+                </td>
+            </tr>
             <tr>
                 <td>( ............................................ )</td>
                 <td>( <strong>{{ $rapor->musyrif }}</strong> )</td>
@@ -160,13 +180,14 @@
 
         <table class="ttd-table" style="margin-top: 30px;">
             <tr>
-                <td>Mengetahui,<br>Pimpinan PPTQ Makkah Madinatul Qur'an</td>
+                <td colspan="2" style="text-align: center;">Mengetahui,<br>Pimpinan PPTQ Makkah Madinatul Qur'an</td>
             </tr>
-            <tr style="height: 60px;"><td></td></tr>
+            <tr style="height: 60px;"><td colspan="2"></td></tr>
             <tr>
-                <td>
-                    <span style="text-decoration: underline; font-weight: bold;">H. Syarif Husen, S. Pd. I</span>
-                    <span style="margin: 0 40px;"></span>
+                <td style="width: 50%; text-align: center;">
+                    <span style="text-decoration: underline; font-weight: bold;">H. Sarip Husen, S. Pd. I</span>
+                </td>
+                <td style="width: 50%; text-align: center;">
                     <span style="text-decoration: underline; font-weight: bold;">H. M. Zaidi, S. Pd. I</span>
                 </td>
             </tr>

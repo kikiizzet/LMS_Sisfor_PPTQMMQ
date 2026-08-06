@@ -98,23 +98,30 @@
     [data-theme="dark"] .text-santri-name { color: #ffffff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
 </style>
 
-<div class="content-wrapper py-3 py-lg-5">
-    <div class="container-fluid px-3 px-lg-4">
-        
-        <div class="row mb-4 align-items-center">
-            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
-                <h2 class="fw-bold text-dark mb-1" style="font-size: clamp(1.2rem, 4vw, 2rem);">Database Santri</h2>
-                <p class="text-muted mb-0 small">Manajemen laporan progres dan transkrip nilai.</p>
+<div class="content-wrapper py-3 py-lg-4">
+    <div class="container-lg">
+        <!-- Header Section -->
+        <div class="page-header flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
+            <div class="page-header-left">
+                <h1><i class="bi bi-people-fill me-2 text-primary"></i>Database Santri Tahfidz</h1>
+                <p>Manajemen laporan progres dan transkrip nilai.</p>
             </div>
-            <div class="col-sm-6 mt-2 mt-sm-0">
-                <div class="d-flex justify-content-sm-end justify-content-center align-items-center gap-2 flex-wrap">
-                    <a href="{{ url('/cetak-semua') }}" id="tombolCetak" class="btn btn-danger btn-sm px-3 rounded-3">
-                        <i class="bi bi-printer me-1"></i> Cetak Rekap
-                    </a>
-                    <div class="bg-white px-3 py-1.5 rounded-3 shadow-sm border d-none d-md-block">
-                        <span class="text-muted small fw-bold">TOTAL:</span>
-                        <span class="text-primary fw-bold ms-1 small">{{ count($data_rapor) }}</span>
-                    </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap ms-sm-auto">
+                @if(count($data_rapor) > 0)
+                <form action="{{ route('raport.truncate') }}" method="POST" id="form-hapus-semua" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-outline-danger" style="border-radius: 12px; font-weight: 600; padding: 10px 16px;" onclick="konfirmasiHapusSemua()">
+                        <i class="bi bi-trash3 me-1"></i> Kosongkan Data
+                    </button>
+                </form>
+                @endif
+                <a href="{{ url('/cetak-semua') }}" id="tombolCetak" class="btn btn-primary" style="border-radius: 12px; font-weight: 600; padding: 10px 20px;">
+                    <i class="bi bi-printer me-1"></i> Cetak Rekap
+                </a>
+                <div class="bg-white px-3 py-2 rounded-3 shadow-sm border d-none d-md-block" style="border-radius: 12px !important;">
+                    <span class="text-muted small fw-bold">TOTAL:</span>
+                    <span class="text-primary fw-bold ms-1 small">{{ count($data_rapor) }}</span>
                 </div>
             </div>
         </div>
@@ -203,7 +210,7 @@
                                     <a href="/edit-santri/{{ $r->id }}" class="btn-action btn-edit" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a href="/cetak/{{ $r->id }}" target="_blank" class="btn-action btn-print" title="Cetak PDF">
+                                    <a href="#" onclick="openPrintModalTahfidz({{ $r->id }}, '{{ addslashes($r->nama_santri) }}')" class="btn-action btn-print" title="Cetak PDF">
                                         <i class="bi bi-printer"></i>
                                     </a>
                                     <form action="/hapus-santri/{{ $r->id }}" method="POST" id="form-hapus-{{ $r->id }}" class="d-inline">
@@ -234,6 +241,58 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Konfirmasi Cetak Tahfidz -->
+<div class="modal fade" id="printModalTahfidz" tabindex="-1" aria-labelledby="printModalTahfidzLabel" aria-hidden="true" style="border-radius: 16px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow" style="border-radius: 16px; background: var(--glass-bg, #ffffff);">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="printModalTahfidzLabel">Konfirmasi Parameter Cetak</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="printFormTahfidz" method="GET" target="_blank" onsubmit="bootstrap.Modal.getInstance(document.getElementById('printModalTahfidz')).hide();">
+                <div class="modal-body py-3">
+                    <p class="text-muted small mb-3">Sesuaikan parameter cetak rapor untuk santri <strong id="modalSantriNameTahfidz" class="text-primary"></strong> sebelum mencetak.</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Semester</label>
+                        <select name="semester" class="form-select" style="border-radius: 10px;">
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Tahun Ajaran</label>
+                        <input type="text" name="tahun_ajaran" class="form-control" value="2025/2026" style="border-radius: 10px;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Halaqoh</label>
+                        <input type="text" name="halaqoh" class="form-control" value="Tahfidz" style="border-radius: 10px;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">KKM</label>
+                        <input type="number" name="kkm" class="form-control" value="60" style="border-radius: 10px;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Tempat & Tanggal Cetak</label>
+                        <input type="text" name="tanggal_cetak" class="form-control" value="Pringkuku, 20 Desember 2025" style="border-radius: 10px;">
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 10px; font-weight: 600;">Batal</button>
+                    <button type="submit" class="btn btn-primary text-white" style="border-radius: 10px; font-weight: 600;">
+                        <i class="bi bi-printer me-1"></i> Buka Rapor & Cetak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     // 1. Fitur Ranking / Sorting dengan Sinkronisasi ke Tombol Cetak
     const sortFilter = document.getElementById('sortFilter');
@@ -325,6 +384,24 @@
         })
     }
 
+    function konfirmasiHapusSemua() {
+        Swal.fire({
+            title: 'Kosongkan Semua Data?',
+            text: "Seluruh data Nilai Tahfidz akan dihapus PERMANEN dari sistem. Tindakan ini tidak dapat dibatalkan!",
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#374151',
+            confirmButtonText: 'Ya, Kosongkan!',
+            cancelButtonText: 'Batal',
+            customClass: { popup: 'rounded-4' }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-hapus-semua').submit();
+            }
+        })
+    }
+
     // 5. Alert Sukses dari Session Laravel
     @if(session('success'))
         Swal.fire({
@@ -336,6 +413,15 @@
             customClass: { popup: 'rounded-4' }
         });
     @endif
+    // 6. Buka Modal Cetak Rapor Tahfidz
+    function openPrintModalTahfidz(id, namaSantri) {
+        document.getElementById('modalSantriNameTahfidz').innerText = namaSantri;
+        const form = document.getElementById('printFormTahfidz');
+        form.action = `/cetak/${id}`;
+        
+        const myModal = new bootstrap.Modal(document.getElementById('printModalTahfidz'));
+        myModal.show();
+    }
 </script>
 @endsection
 

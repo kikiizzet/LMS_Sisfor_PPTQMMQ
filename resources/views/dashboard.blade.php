@@ -2,298 +2,618 @@
 
 @section('main-content')
 <style>
-    :root {
-        --glass-bg: rgba(255, 255, 255, 0.85);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --primary-soft: #e0f2fe;
-        --success-soft: #dcfce7;
-        --warning-soft: #fef3c7;
-        --danger-soft: #fee2e2;
+    /* ============================================================
+       DASHBOARD PREMIUM — MMQ DIGITAL
+    ============================================================ */
+
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(14,165,233,0.3); }
+        50%       { box-shadow: 0 0 0 8px rgba(14,165,233,0); }
+    }
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50%       { transform: translateY(-10px) rotate(3deg); }
     }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-in { animation: fadeIn 0.5s ease-out forwards; }
+    .dash-section { animation: fadeSlideUp 0.5s ease-out forwards; }
+    .dash-section:nth-child(1) { animation-delay: 0.0s; }
+    .dash-section:nth-child(2) { animation-delay: 0.1s; }
+    .dash-section:nth-child(3) { animation-delay: 0.2s; }
+    .dash-section:nth-child(4) { animation-delay: 0.3s; }
 
-    /* Hero Section */
-    .hero-glass {
-        background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #0e3a6e 50%, #0ea5e9 100%);
         border-radius: 24px;
-        padding: 40px;
+        padding: 44px 48px;
         color: white;
         position: relative;
         overflow: hidden;
-        margin-bottom: 30px;
-        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+        margin-bottom: 28px;
     }
-    
-    @media (max-width: 768px) {
-        .hero-glass {
-            padding: 24px;
-            border-radius: 20px;
-        }
-    }
-
-    .hero-glass::after {
+    .hero-banner::before {
         content: '';
         position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        top: -60px; right: -60px;
+        width: 340px; height: 340px;
+        background: radial-gradient(circle, rgba(56,189,248,0.18) 0%, transparent 70%);
         border-radius: 50%;
+        pointer-events: none;
+    }
+    .hero-banner::after {
+        content: '';
+        position: absolute;
+        bottom: -80px; left: 20%;
+        width: 260px; height: 260px;
+        background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 100px;
+        padding: 6px 14px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+        color: #bae6fd;
+    }
+    .hero-badge .dot {
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: #38bdf8;
+        animation: pulseGlow 2s infinite;
+    }
+    .hero-title {
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+        margin-bottom: 10px;
+    }
+    .hero-sub {
+        opacity: 0.6;
+        font-size: 0.92rem;
+        font-weight: 400;
+        margin-bottom: 28px;
+        max-width: 480px;
+    }
+    .btn-hero {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 100px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        border: 1.5px solid transparent;
+    }
+    .btn-hero-primary {
+        background: rgba(255,255,255,0.95);
+        color: #0f172a;
+    }
+    .btn-hero-primary:hover {
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        transform: translateY(-2px);
+        color: #0f172a;
+    }
+    .btn-hero-outline {
+        background: rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.9);
+        border-color: rgba(255,255,255,0.2);
+    }
+    .btn-hero-outline:hover {
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+    .btn-hero-warning {
+        background: #f59e0b;
+        color: #1c1917;
+    }
+    .btn-hero-warning:hover {
+        background: #fbbf24;
+        box-shadow: 0 8px 20px rgba(245,158,11,0.3);
+        transform: translateY(-2px);
+        color: #1c1917;
+    }
+    .hero-float-icon {
+        font-size: 130px;
+        opacity: 0.07;
+        animation: floatIcon 6s ease-in-out infinite;
+        line-height: 1;
     }
 
-    /* Stats Cards */
+    /* ── Stat Cards ───────────────────────────────────────────── */
     .stat-card-premium {
-        background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid var(--glass-border);
+        background: #fff;
+        border: 1px solid #f1f5f9;
         border-radius: 20px;
-        padding: 24px;
+        padding: 22px 20px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         cursor: pointer;
-        /* Ensure charts inside don't overflow */
         min-width: 0;
         overflow: hidden;
+        position: relative;
     }
+    .stat-card-premium::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 4px; height: 100%;
+        border-radius: 20px 0 0 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .stat-card-premium:hover { 
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.07);
+        border-color: transparent;
+    }
+    .stat-card-premium:hover::before { opacity: 1; }
 
-    .stat-card-premium:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-        border-color: #0ea5e9;
-    }
+    .stat-card-primary::before   { background: #0ea5e9; }
+    .stat-card-success::before   { background: #10b981; }
+    .stat-card-info::before      { background: #6366f1; }
+    .stat-card-warning::before   { background: #f59e0b; }
+    .stat-card-danger::before    { background: #ef4444; }
+
+    .stat-card-primary:hover  { border-color: rgba(14,165,233,0.2); box-shadow: 0 20px 40px rgba(14,165,233,0.07); }
+    .stat-card-success:hover  { border-color: rgba(16,185,129,0.2); box-shadow: 0 20px 40px rgba(16,185,129,0.07); }
+    .stat-card-info:hover     { border-color: rgba(99,102,241,0.2); box-shadow: 0 20px 40px rgba(99,102,241,0.07); }
+    .stat-card-warning:hover  { border-color: rgba(245,158,11,0.2); box-shadow: 0 20px 40px rgba(245,158,11,0.07); }
+    .stat-card-danger:hover   { border-color: rgba(239,68,68,0.2);  box-shadow: 0 20px 40px rgba(239,68,68,0.07); }
 
     .stat-icon {
-        width: 54px;
-        height: 54px;
-        border-radius: 16px;
+        width: 48px; height: 48px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        margin-bottom: 15px;
+        font-size: 1.3rem;
+        margin-bottom: 14px;
+        flex-shrink: 0;
     }
+    .stat-icon-primary   { background: #e0f2fe; color: #0284c7; }
+    .stat-icon-success   { background: #d1fae5; color: #059669; }
+    .stat-icon-info      { background: #ede9fe; color: #7c3aed; }
+    .stat-icon-warning   { background: #fef3c7; color: #d97706; }
+    .stat-icon-danger    { background: #fee2e2; color: #dc2626; }
 
-    /* Quick Action Buttons */
-    .btn-quick {
-        border-radius: 16px;
-        padding: 12px 20px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: 0.2s;
-        border: 1px solid transparent;
+    .stat-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #94a3b8;
+        margin-bottom: 4px;
     }
-
-    .btn-quick:hover {
-        transform: scale(1.03);
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
     }
+    .stat-value-primary  { color: #0369a1; }
+    .stat-value-success  { color: #047857; }
+    .stat-value-info     { color: #5b21b6; }
+    .stat-value-warning  { color: #b45309; }
+    .stat-value-danger   { color: #b91c1c; }
 
-    /* Table & List Styling */
-    .leaderboard-item {
-        padding: 15px;
-        border-radius: 12px;
-        margin-bottom: 8px;
+    /* ── Section Card (Charts, Tables) ─────────────────────────── */
+    .section-card {
         background: #fff;
         border: 1px solid #f1f5f9;
-        transition: 0.2s;
+        border-radius: 20px;
+        padding: 24px;
+        height: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .section-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f8fafc;
+    }
+    .section-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-card-title .title-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #0ea5e9;
+        flex-shrink: 0;
+    }
+    .section-card-badge {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #64748b;
+        background: #f1f5f9;
+        border-radius: 100px;
+        padding: 4px 12px;
+        letter-spacing: 0.3px;
     }
 
-    .leaderboard-item:hover {
-        background: var(--primary-soft);
-        transform: translateX(5px);
+    /* ── Leaderboard ─────────────────────────────────────────── */
+    .lb-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #f1f5f9;
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+    }
+    .lb-item:hover {
+        background: #e0f2fe;
+        border-color: #bae6fd;
+        transform: translateX(4px);
+        color: inherit;
+    }
+    .lb-rank {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .lb-rank-gold   { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #fff; box-shadow: 0 4px 8px rgba(245,158,11,0.3); }
+    .lb-rank-silver { background: linear-gradient(135deg, #94a3b8, #64748b); color: #fff; }
+    .lb-rank-bronze { background: linear-gradient(135deg, #c47c3b, #a16207); color: #fff; }
+    .lb-rank-plain  { background: #e2e8f0; color: #64748b; }
+
+    /* ── Activity Table ─────────────────────────────────────────── */
+    .act-table { width: 100%; border-collapse: collapse; }
+    .act-table thead th {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #94a3b8;
+        padding: 0 0 12px;
+        border: none;
+    }
+    .act-table tbody tr {
+        border-top: 1px solid #f8fafc;
+        transition: background 0.15s;
+    }
+    .act-table tbody tr:hover { background: #f8fafc; }
+    .act-table tbody td {
+        padding: 11px 0;
+        vertical-align: middle;
+        font-size: 0.8rem;
+        border: none;
+    }
+    .act-avatar {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        flex-shrink: 0;
     }
 
-    /* Dashboard Dark Mode Overrides */
+    /* ── Dark Mode ───────────────────────────────────────────── */
+    [data-theme="dark"] .hero-banner {
+        background: linear-gradient(135deg, #060d1e 0%, #0c2d54 50%, #0369a1 100%);
+    }
     [data-theme="dark"] .stat-card-premium {
-        --glass-bg: rgba(30, 41, 59, 0.95);
-        --glass-border: rgba(71, 85, 105, 0.5);
+        background: #1e293b;
+        border-color: #334155;
     }
-    [data-theme="dark"] .leaderboard-item {
-        background: #334155;
-        border-color: #475569;
+    [data-theme="dark"] .stat-card-premium:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    [data-theme="dark"] .stat-icon-primary  { background: #0c2d54; color: #38bdf8; }
+    [data-theme="dark"] .stat-icon-success  { background: #052e16; color: #34d399; }
+    [data-theme="dark"] .stat-icon-info     { background: #2e1065; color: #a78bfa; }
+    [data-theme="dark"] .stat-icon-warning  { background: #451a03; color: #fbbf24; }
+    [data-theme="dark"] .stat-icon-danger   { background: #450a0a; color: #f87171; }
+    [data-theme="dark"] .stat-value-primary { color: #38bdf8; }
+    [data-theme="dark"] .stat-value-success { color: #34d399; }
+    [data-theme="dark"] .stat-value-info    { color: #a78bfa; }
+    [data-theme="dark"] .stat-value-warning { color: #fbbf24; }
+    [data-theme="dark"] .stat-value-danger  { color: #f87171; }
+    [data-theme="dark"] .section-card {
+        background: #1e293b;
+        border-color: #334155;
     }
-    [data-theme="dark"] .leaderboard-item:hover {
-        background: #3b4f6b;
-    }
-    [data-theme="dark"] .hero-glass {
-        background: linear-gradient(135deg, #0c4a6e 0%, #1e3a5f 100%);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    [data-theme="dark"] .badge.bg-light {
-        background: #334155 !important;
-        color: #94a3b8 !important;
+    [data-theme="dark"] .section-card-header { border-bottom-color: #334155; }
+    [data-theme="dark"] .section-card-title  { color: #f1f5f9; }
+    [data-theme="dark"] .section-card-badge  { background: #334155; color: #94a3b8; }
+    [data-theme="dark"] .lb-item { background: #334155; border-color: #475569; color: #e2e8f0; }
+    [data-theme="dark"] .lb-item:hover { background: #1e3a5f; border-color: #38bdf8; color: #e2e8f0; }
+    [data-theme="dark"] .act-table tbody tr { border-top-color: #334155; }
+    [data-theme="dark"] .act-table tbody tr:hover { background: #334155; }
+    [data-theme="dark"] .act-table tbody td,
+    [data-theme="dark"] .act-table thead th { color: #94a3b8; }
+
+    @media (max-width: 768px) {
+        .hero-banner { padding: 28px 24px; }
+        .hero-title { font-size: 1.5rem; }
+        .hero-float-icon { display: none; }
     }
 </style>
 
-<div class="container-fluid animate-in">
-    <!-- Section 1: Hero Command Center -->
-    <div class="hero-glass">
-        <div class="row align-items-center">
-            <div class="col-lg-8 text-center text-lg-start">
-                <h1 class="fw-bold mb-3" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">Pusat Komando MMQ Digital</h1>
-                <p class="opacity-75 fs-6 mb-4">Pantau seluruh perkembangan akademik santri dalam satu tampilan cerdas.</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
-                    <a href="/input" class="btn btn-white text-primary fw-bold px-4 py-2 rounded-pill shadow-sm">
-                        <i class="bi bi-pencil-square me-2"></i> Input Tahfidz
-                    </a>
-                    <a href="{{ route('raport-kmi.create') }}" class="btn btn-outline-white text-white fw-bold px-4 py-2 rounded-pill border-2">
-                        <i class="bi bi-journal-plus me-2"></i> Input KMI
-                    </a>
-                    <a href="{{ route('raport-kmi.grid') }}" class="btn btn-warning text-dark fw-bold px-4 py-2 rounded-pill shadow-sm">
-                        <i class="bi bi-grid-3x3-gap-fill me-2"></i> Smart Grid
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 text-end d-none d-lg-block">
-                <i class="bi bi-layers-half" style="font-size: 120px; opacity: 0.15;"></i>
-            </div>
-        </div>
-    </div>
+<div class="container-fluid px-0">
 
-    <!-- Section 2: Integrated Statistics -->
-    <div class="row g-3 g-xl-4 mb-4 mb-lg-5">
-        <div class="col-sm-6 col-xl">
-            <div class="stat-card-premium" onclick="window.location='/daftar'">
-                <div class="stat-icon bg-primary text-white shadow-sm">
-                    <i class="bi bi-people"></i>
-                </div>
-                <h6 class="text-muted fw-bold small text-uppercase mb-1" style="font-size: 0.65rem;">Total Santri</h6>
-                <h2 class="fw-bold mb-0 text-dark">{{ $totalSantriGlobal }}</h2>
-                <div class="mt-2 flex-wrap d-flex gap-1">
-                    <span class="badge bg-primary-subtle text-primary" style="font-size: 0.6rem;">{{ $totalKmi }} KMI</span>
-                    <span class="badge bg-info-subtle text-info" style="font-size: 0.6rem;">{{ $totalSantriTahfidz }} Tahfidz</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl">
-            <div class="stat-card-premium" onclick="showDetail('Mumtaz')">
-                <div class="stat-icon bg-success text-white shadow-sm">
-                    <i class="bi bi-mortarboard"></i>
-                </div>
-                <h6 class="text-muted fw-bold small text-uppercase mb-1" style="font-size: 0.65rem;">Mumtaz</h6>
-                <h2 class="fw-bold mb-0 text-success">{{ $mumtaz }}</h2>
-                <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
-                    <div class="progress-bar bg-success" style="width: {{ $totalSantriGlobal > 0 ? ($mumtaz/$totalSantriGlobal)*100 : 0 }}%"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl">
-            <div class="stat-card-premium" onclick="showDetail('Jayyid Jiddan')">
-                <div class="stat-icon bg-info text-white shadow-sm">
-                    <i class="bi bi-star-fill"></i>
-                </div>
-                <h6 class="text-muted fw-bold small text-uppercase mb-1" style="font-size: 0.65rem;">Jayyid Jiddan</h6>
-                <h2 class="fw-bold mb-0 text-info">{{ $jayyidJiddan }}</h2>
-                <p class="small text-muted mb-0 mt-2" style="font-size: 0.7rem;">Sangat Baik</p>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl">
-            <div class="stat-card-premium" onclick="showDetail('Jayyid')">
-                <div class="stat-icon bg-warning text-white shadow-sm">
-                    <i class="bi bi-star"></i>
-                </div>
-                <h6 class="text-muted fw-bold small text-uppercase mb-1" style="font-size: 0.65rem;">Jayyid</h6>
-                <h2 class="fw-bold mb-0 text-warning">{{ $jayyid }}</h2>
-                <p class="small text-muted mb-0 mt-2" style="font-size: 0.7rem;">Cukup Baik</p>
-            </div>
-        </div>
-        <div class="col-sm-12 col-xl">
-            <div class="stat-card-premium" onclick="showDetail('Maqbul')">
-                <div class="stat-icon bg-danger text-white shadow-sm">
-                    <i class="bi bi-exclamation-triangle"></i>
-                </div>
-                <h6 class="text-muted fw-bold small text-uppercase mb-1" style="font-size: 0.65rem;">Maqbul</h6>
-                <h2 class="fw-bold mb-0 text-danger">{{ $maqbul }}</h2>
-                <p class="small text-muted mb-0 mt-2" style="font-size: 0.7rem;">Bimbingan Khusus</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 3: Performance & Distribution -->
-    <div class="row g-4 mb-4">
-        <!-- Performance Chart: Bar -->
-        <div class="col-xl-8">
-            <div class="stat-card-premium h-100" style="cursor: default !important;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">Statistik Capaian Musyrif (Tahfidz)</h5>
-                    <div class="badge bg-light text-dark border shadow-xs">Data Per-Ustadz</div>
-                </div>
-                <div id="musyrifBarChart" style="height: 350px;"></div>
-            </div>
-        </div>
-
-        <!-- Distribution Chart: Donut -->
-        <div class="col-xl-4">
-            <div class="stat-card-premium h-100" style="cursor: default !important;">
-                <h5 class="fw-bold mb-4">Sebaran Predikat</h5>
-                <div id="predikatDonutChart" style="height: 350px;"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 4: Leaderboard & Activity Logs -->
-    <div class="row g-4 mb-5">
-        <!-- Global Leaderboard -->
-        <div class="col-xl-4">
-            <div class="stat-card-premium h-100" style="cursor: default !important;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">🏆 Top 5 Integrated</h5>
-                    <a href="{{ route('rekapitulasi') }}" class="small text-decoration-none">Detail →</a>
-                </div>
-                <div>
-                    @forelse($topFiveGlobal as $s)
-                    <div class="leaderboard-item d-flex align-items-center">
-                        <div class="me-3">
-                            <span class="badge rounded-circle {{ $loop->index < 3 ? 'bg-warning text-dark' : 'bg-light text-muted' }}" style="width: 28px; height: 28px; line-height: 18px;">{{ $loop->iteration }}</span>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-0 fw-bold small text-uppercase">{{ $s->nama }}</h6>
-                        </div>
-                        <div class="text-end">
-                            <div class="fw-bold text-primary">{{ number_format($s->total, 2) }}</div>
-                        </div>
+    {{-- ============================================================
+         SECTION 1 — HERO COMMAND CENTER
+    ============================================================ --}}
+    <div class="dash-section mb-4">
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Sistem Aktif · Real-time
                     </div>
-                    @empty
-                    <div class="text-center py-5 text-muted small">Belum ada data nilai terkumpul.</div>
-                    @endforelse
+                    <h1 class="hero-title">Pusat Komando<br>MMQ Digital</h1>
+                    <p class="hero-sub">Pantau seluruh perkembangan akademik santri dalam satu tampilan cerdas dan terintegrasi.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="/input" class="btn-hero btn-hero-primary">
+                            <i class="bi bi-pencil-square"></i> Input Tahfidz
+                        </a>
+                        <a href="{{ route('raport-kmi.create') }}" class="btn-hero btn-hero-outline">
+                            <i class="bi bi-journal-plus"></i> Input KMI
+                        </a>
+                        <a href="{{ route('raport-kmi.grid') }}" class="btn-hero btn-hero-warning">
+                            <i class="bi bi-grid-3x3-gap-fill"></i> Smart Grid
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-end d-none d-lg-flex justify-content-end align-items-center">
+                    <i class="bi bi-layers-half hero-float-icon"></i>
                 </div>
             </div>
         </div>
-        <div class="col-xl-4 col-md-6">
-            <div class="stat-card-premium" style="cursor: default !important;">
-                <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2 text-primary"></i>Riwayat Tahfidz</h5>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle small mb-0">
-                        <thead><tr class="text-muted"><th style="font-size: 0.65rem;">SANTRI</th><th style="font-size: 0.65rem;">MUSYRIF</th><th class="text-end">🖨️</th></tr></thead>
+    </div>
+
+    {{-- ============================================================
+         SECTION 2 — STAT CARDS
+    ============================================================ --}}
+    <div class="dash-section mb-4">
+        <div class="row g-3">
+            {{-- Total Santri --}}
+            <div class="col-6 col-xl">
+                <div class="stat-card-premium stat-card-primary" onclick="window.location='/daftar'">
+                    <div class="stat-icon stat-icon-primary">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="stat-label">Total Santri</div>
+                    <div class="stat-value stat-value-primary">{{ $totalSantriGlobal }}</div>
+                    <div class="d-flex flex-wrap gap-1 mt-1">
+                        <span class="badge rounded-pill" style="background:#e0f2fe;color:#0284c7;font-size:0.62rem;font-weight:600;">{{ $totalKmi }} KMI</span>
+                        <span class="badge rounded-pill" style="background:#e0f2fe;color:#0ea5e9;font-size:0.62rem;font-weight:600;">{{ $totalSantriTahfidz }} Tahfidz</span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Mumtaz --}}
+            <div class="col-6 col-xl">
+                <div class="stat-card-premium stat-card-success" onclick="showDetail('Mumtaz')">
+                    <div class="stat-icon stat-icon-success">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <div class="stat-label">Mumtaz</div>
+                    <div class="stat-value stat-value-success">{{ $mumtaz }}</div>
+                    <div class="progress mt-2" style="height:5px;border-radius:10px;background:#d1fae5;">
+                        <div class="progress-bar" style="width:{{ $totalSantriGlobal > 0 ? ($mumtaz/$totalSantriGlobal)*100 : 0 }}%;background:#10b981;border-radius:10px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Jayyid Jiddan --}}
+            <div class="col-6 col-xl">
+                <div class="stat-card-premium stat-card-info" onclick="showDetail('Jayyid Jiddan')">
+                    <div class="stat-icon stat-icon-info">
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <div class="stat-label">Jayyid Jiddan</div>
+                    <div class="stat-value stat-value-info">{{ $jayyidJiddan }}</div>
+                    <div class="stat-label mt-1" style="font-size:0.66rem;color:#7c3aed;">Sangat Baik</div>
+                </div>
+            </div>
+
+            {{-- Jayyid --}}
+            <div class="col-6 col-xl">
+                <div class="stat-card-premium stat-card-warning" onclick="showDetail('Jayyid')">
+                    <div class="stat-icon stat-icon-warning">
+                        <i class="bi bi-star-half"></i>
+                    </div>
+                    <div class="stat-label">Jayyid</div>
+                    <div class="stat-value stat-value-warning">{{ $jayyid }}</div>
+                    <div class="stat-label mt-1" style="font-size:0.66rem;color:#d97706;">Cukup Baik</div>
+                </div>
+            </div>
+
+            {{-- Maqbul --}}
+            <div class="col-12 col-xl">
+                <div class="stat-card-premium stat-card-danger" onclick="showDetail('Maqbul')">
+                    <div class="stat-icon stat-icon-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <div class="stat-label">Maqbul</div>
+                    <div class="stat-value stat-value-danger">{{ $maqbul }}</div>
+                    <div class="stat-label mt-1" style="font-size:0.66rem;color:#dc2626;">Bimbingan Khusus</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============================================================
+         SECTION 3 — CHARTS
+    ============================================================ --}}
+    <div class="dash-section mb-4">
+        <div class="row g-3">
+            <div class="col-xl-8">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h5 class="section-card-title">
+                            <span class="title-dot"></span>
+                            Statistik Capaian Musyrif (Tahfidz)
+                        </h5>
+                        <span class="section-card-badge">Per Ustadz</span>
+                    </div>
+                    <div id="musyrifBarChart" style="height:320px;"></div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h5 class="section-card-title">
+                            <span class="title-dot" style="background:#10b981;"></span>
+                            Sebaran Predikat
+                        </h5>
+                    </div>
+                    <div id="predikatDonutChart" style="height:320px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============================================================
+         SECTION 4 — LEADERBOARD & ACTIVITY
+    ============================================================ --}}
+    <div class="dash-section mb-4">
+        <div class="row g-3">
+            {{-- Leaderboard --}}
+            <div class="col-xl-4">
+                <div class="section-card h-100">
+                    <div class="section-card-header">
+                        <h5 class="section-card-title">
+                            <span class="title-dot" style="background:#f59e0b;"></span>
+                            Top 5 Integrated
+                        </h5>
+                        <a href="{{ route('rekapitulasi') }}" class="section-card-badge text-decoration-none" style="color:#0ea5e9;">
+                            Lihat Semua →
+                        </a>
+                    </div>
+                    <div>
+                        @forelse($topFiveGlobal as $s)
+                        <div class="lb-item">
+                            <div class="lb-rank {{ $loop->index === 0 ? 'lb-rank-gold' : ($loop->index === 1 ? 'lb-rank-silver' : ($loop->index === 2 ? 'lb-rank-bronze' : 'lb-rank-plain')) }}">
+                                {{ $loop->iteration }}
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="fw-bold text-truncate" style="font-size:0.82rem;letter-spacing:0.3px;">{{ strtoupper($s->nama) }}</div>
+                            </div>
+                            <div class="text-end flex-shrink-0">
+                                <span class="fw-bold" style="font-size:0.9rem;color:#0284c7;">{{ number_format($s->total, 2) }}</span>
+                            </div>
+                        </div>
+                        @empty
+                        <div class="text-center py-5 text-muted" style="font-size:0.82rem;">
+                            <i class="bi bi-inbox fs-3 d-block mb-2 opacity-30"></i>
+                            Belum ada data nilai.
+                        </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            {{-- Riwayat Tahfidz --}}
+            <div class="col-xl-4 col-md-6">
+                <div class="section-card h-100">
+                    <div class="section-card-header">
+                        <h5 class="section-card-title">
+                            <span class="title-dot" style="background:#6366f1;"></span>
+                            Riwayat Tahfidz
+                        </h5>
+                        <span class="section-card-badge">Terbaru</span>
+                    </div>
+                    <table class="act-table">
+                        <thead>
+                            <tr>
+                                <th>Santri</th>
+                                <th>Musyrif</th>
+                                <th class="text-end">Cetak</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach($riwayat as $r)
                             <tr>
-                                <td class="fw-bold text-dark text-uppercase" style="font-size: 0.75rem;">{{ Str::limit($r->nama_santri, 15) }}</td>
-                                <td class="text-muted small" style="font-size: 0.65rem;">{{ Str::limit($r->musyrif, 12) }}</td>
-                                <td class="text-end"><a href="{{ route('raport.cetak', $r->id) }}" class="text-primary"><i class="bi bi-printer"></i></a></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="act-avatar">{{ strtoupper(substr($r->nama_santri, 0, 1)) }}</div>
+                                        <span class="fw-semibold text-truncate" style="max-width:90px;font-size:0.78rem;">{{ Str::limit($r->nama_santri, 14) }}</span>
+                                    </div>
+                                </td>
+                                <td class="text-muted" style="font-size:0.72rem;">{{ Str::limit($r->musyrif, 12) }}</td>
+                                <td class="text-end">
+                                    <a href="{{ route('raport.cetak', $r->id) }}" class="btn btn-sm" style="background:#e0f2fe;color:#0284c7;border-radius:8px;padding:4px 10px;font-size:0.7rem;">
+                                        <i class="bi bi-printer-fill"></i>
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-4 col-md-6">
-            <div class="stat-card-premium" style="cursor: default !important;">
-                <h5 class="fw-bold mb-3"><i class="bi bi-journal-text me-2 text-success"></i>Riwayat KMI</h5>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle small mb-0">
-                        <thead><tr class="text-muted"><th style="font-size: 0.65rem;">SANTRI</th><th style="font-size: 0.65rem;">KELAS</th><th class="text-end">🖨️</th></tr></thead>
+
+            {{-- Riwayat KMI --}}
+            <div class="col-xl-4 col-md-6">
+                <div class="section-card h-100">
+                    <div class="section-card-header">
+                        <h5 class="section-card-title">
+                            <span class="title-dot" style="background:#10b981;"></span>
+                            Riwayat KMI
+                        </h5>
+                        <span class="section-card-badge">Terbaru</span>
+                    </div>
+                    <table class="act-table">
+                        <thead>
+                            <tr>
+                                <th>Santri</th>
+                                <th>Kelas</th>
+                                <th class="text-end">Cetak</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach($riwayatKmi as $rk)
                             <tr>
-                                <td class="fw-bold text-dark text-uppercase" style="font-size: 0.75rem;">{{ Str::limit($rk->nama_santri, 15) }}</td>
-                                <td class="text-muted small" style="font-size: 0.65rem;">{{ $rk->kelas }}</td>
-                                <td class="text-end"><a href="{{ route('raport-kmi.cetak', $rk->id) }}" class="text-success"><i class="bi bi-printer"></i></a></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="act-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">{{ strtoupper(substr($rk->nama_santri, 0, 1)) }}</div>
+                                        <span class="fw-semibold text-truncate" style="max-width:90px;font-size:0.78rem;">{{ Str::limit($rk->nama_santri, 14) }}</span>
+                                    </div>
+                                </td>
+                                <td class="text-muted" style="font-size:0.72rem;">{{ $rk->kelas }}</td>
+                                <td class="text-end">
+                                    <a href="{{ route('raport-kmi.cetak', $rk->id) }}" class="btn btn-sm" style="background:#d1fae5;color:#059669;border-radius:8px;padding:4px 10px;font-size:0.7rem;">
+                                        <i class="bi bi-printer-fill"></i>
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -302,20 +622,19 @@
             </div>
         </div>
     </div>
+
 </div>
 
-<!-- Modal Detail Santri -->
+{{-- ── Modal Detail Santri ───────────────────────────────────────── --}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-            <div class="modal-header border-0 pb-0">
+        <div class="modal-content border-0" style="border-radius:20px;box-shadow:0 25px 50px rgba(0,0,0,0.15);">
+            <div class="modal-header border-0 pb-0 px-4 pt-4">
                 <h6 class="modal-title fw-bold" id="modalTitle">Daftar Santri</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <div id="santriList" class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                    {{-- Konten diisi via JS --}}
-                </div>
+            <div class="modal-body px-4 pb-4">
+                <div id="santriList" style="max-height:400px;overflow-y:auto;"></div>
             </div>
         </div>
     </div>
@@ -326,105 +645,140 @@
 
     function showDetail(predikat) {
         const listContainer = document.getElementById('santriList');
-        const titleModal = document.getElementById('modalTitle');
+        const titleModal    = document.getElementById('modalTitle');
         const modal = new bootstrap.Modal(document.getElementById('detailModal'));
-        
-        titleModal.innerText = "Santri " + predikat;
-        listContainer.innerHTML = ""; 
-
+        const colorMap = { Mumtaz: '#10b981', 'Jayyid Jiddan': '#6366f1', Jayyid: '#f59e0b', Maqbul: '#ef4444' };
+        const accent = colorMap[predikat] || '#0ea5e9';
+        titleModal.innerHTML = `<span style="color:${accent}">●</span> Santri ${predikat}`;
+        listContainer.innerHTML = '';
         let filtered = dataIntegrated.filter(item => {
             const val = parseFloat(item.total);
-            if (predikat === 'Mumtaz') return val >= 90;
+            if (predikat === 'Mumtaz')        return val >= 90;
             if (predikat === 'Jayyid Jiddan') return val >= 80 && val < 90;
-            if (predikat === 'Jayyid') return val >= 70 && val < 80;
-            if (predikat === 'Maqbul') return val < 70;
+            if (predikat === 'Jayyid')        return val >= 70 && val < 80;
+            if (predikat === 'Maqbul')        return val < 70;
             return false;
-        });
-
-        filtered.sort((a, b) => b.total - a.total);
+        }).sort((a, b) => b.total - a.total);
 
         if (filtered.length > 0) {
             filtered.forEach(item => {
                 listContainer.innerHTML += `
-                    <div class="list-group-item d-flex align-items-center border-0 px-0 mb-2 bg-light rounded-3 p-3">
-                        <div class="avatar-sm me-3 bg-white text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 35px; height: 35px; font-size: 0.8rem;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:#f8fafc;margin-bottom:8px;border:1px solid #f1f5f9;">
+                        <div style="width:34px;height:34px;border-radius:50%;background:${accent};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;">
                             ${item.nama.charAt(0).toUpperCase()}
                         </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">${item.nama}</div>
-                            <div class="text-muted" style="font-size: 0.7rem;">Nilai: ${parseFloat(item.total).toFixed(2)}</div>
+                        <div style="flex:1;overflow:hidden;">
+                            <div style="font-weight:700;font-size:0.82rem;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.nama}</div>
+                            <div style="font-size:0.7rem;color:#94a3b8;">Nilai: <b style="color:${accent}">${parseFloat(item.total).toFixed(2)}</b></div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         } else {
-            listContainer.innerHTML = `<p class="text-center text-muted my-3 small">Tidak ada data untuk kategori ini.</p>`;
+            listContainer.innerHTML = `<p class="text-center text-muted my-4 small"><i class="bi bi-inbox fs-4 d-block mb-2 opacity-30"></i>Tidak ada data.</p>`;
         }
-        
         modal.show();
     }
 
-    // Dark mode helpers for ApexCharts
-    function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
-    function chartForeColor() { return isDark() ? '#94a3b8' : '#666'; }
-    function chartGridColor() { return isDark() ? '#334155' : '#f1f1f1'; }
+    // ApexCharts helpers
+    function isDark()      { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+    function chartFg()     { return isDark() ? '#94a3b8' : '#64748b'; }
+    function chartGrid()   { return isDark() ? '#334155' : '#f1f5f9'; }
+    function chartBg()     { return isDark() ? '#1e293b'  : '#ffffff'; }
 
-    // ApexCharts: Sebaran Predikat
-    const optionsPredikat = {
+    // ── Donut: Sebaran Predikat ──────────────────────────────────
+    const optPredikat = {
         series: [{{ $mumtaz }}, {{ $jayyidJiddan }}, {{ $jayyid }}, {{ $maqbul }}],
-        chart: { type: 'donut', height: 320, width: '100%', redrawOnParentResize: true, foreColor: chartForeColor(), background: 'transparent' },
+        chart: {
+            type: 'donut', height: 300,
+            background: 'transparent',
+            foreColor: chartFg(),
+            toolbar: { show: false },
+            redrawOnParentResize: true,
+        },
         labels: ['Mumtaz', 'Jayyid Jiddan', 'Jayyid', 'Maqbul'],
-        colors: ['#10b981', '#0ea5e9', '#f59e0b', '#ef4444'],
-        plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'TOTAL', fontSize: '10px', color: chartForeColor() } } } } },
+        colors: ['#10b981', '#6366f1', '#f59e0b', '#ef4444'],
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '68%',
+                    labels: {
+                        show: true,
+                        total: { show: true, label: 'TOTAL', fontSize: '11px', fontWeight: 700, color: chartFg() }
+                    }
+                }
+            }
+        },
         dataLabels: { enabled: false },
-        legend: { position: 'bottom', labels: { colors: chartForeColor() } },
+        legend: {
+            position: 'bottom',
+            fontSize: '12px',
+            labels: { colors: chartFg() },
+            markers: { width: 8, height: 8, radius: 4 },
+        },
         stroke: { show: false },
-        tooltip: { theme: isDark() ? 'dark' : 'light' }
+        tooltip: { theme: isDark() ? 'dark' : 'light' },
     };
-    const chartPredikat = new ApexCharts(document.querySelector("#predikatDonutChart"), optionsPredikat);
+    const chartPredikat = new ApexCharts(document.querySelector('#predikatDonutChart'), optPredikat);
     chartPredikat.render();
 
-    // ApexCharts: Korelasi Musyrif
-    const dataKorelasi = @json($korelasiMusyrif); 
-    const optionsMusyrif = {
+    // ── Bar: Statistik Musyrif ───────────────────────────────────
+    const dataKorelasi = @json($korelasiMusyrif);
+    const optMusyrif = {
         series: [
-            { name: 'Mumtaz', data: dataKorelasi.map(d => d.mumtaz) },
-            { name: 'J. Jiddan', data: dataKorelasi.map(d => d.jayyidJiddan) },
-            { name: 'Jayyid', data: dataKorelasi.map(d => d.jayyid) },
-            { name: 'Maqbul', data: dataKorelasi.map(d => d.maqbul) }
+            { name: 'Mumtaz',      data: dataKorelasi.map(d => d.mumtaz) },
+            { name: 'J. Jiddan',   data: dataKorelasi.map(d => d.jayyidJiddan) },
+            { name: 'Jayyid',      data: dataKorelasi.map(d => d.jayyid) },
+            { name: 'Maqbul',      data: dataKorelasi.map(d => d.maqbul) },
         ],
-        chart: { type: 'bar', height: 350, width: '100%', stacked: true, toolbar: { show: false }, redrawOnParentResize: true, foreColor: chartForeColor(), background: 'transparent' },
-        colors: ['#10b981', '#0ea5e9', '#f59e0b', '#ef4444'],
-        xaxis: { categories: dataKorelasi.map(d => d.nama), labels: { style: { colors: chartForeColor() } } },
-        yaxis: { labels: { style: { colors: chartForeColor() } } },
-        legend: { position: 'top', horizontalAlign: 'right', labels: { colors: chartForeColor() } },
+        chart: {
+            type: 'bar', height: 300,
+            stacked: true,
+            background: 'transparent',
+            foreColor: chartFg(),
+            toolbar: { show: false },
+            redrawOnParentResize: true,
+        },
+        colors: ['#10b981', '#6366f1', '#f59e0b', '#ef4444'],
+        xaxis: {
+            categories: dataKorelasi.map(d => d.nama),
+            labels: { style: { colors: chartFg(), fontSize: '11px' } },
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+        },
+        yaxis: { labels: { style: { colors: chartFg() } } },
+        legend: {
+            position: 'top', horizontalAlign: 'right',
+            fontSize: '12px',
+            labels: { colors: chartFg() },
+            markers: { width: 8, height: 8, radius: 4 },
+        },
+        plotOptions: {
+            bar: { borderRadius: 5, columnWidth: '42%', borderRadiusApplication: 'end', borderRadiusWhenStacked: 'last' }
+        },
         fill: { opacity: 1 },
-        plotOptions: { bar: { borderRadius: 6, columnWidth: '40%' } },
-        grid: { borderColor: chartGridColor(), strokeDashArray: 4 },
-        tooltip: { theme: isDark() ? 'dark' : 'light' }
+        grid: { borderColor: chartGrid(), strokeDashArray: 4, padding: { left: 4, right: 4 } },
+        tooltip: { theme: isDark() ? 'dark' : 'light' },
     };
-    const chartMusyrif = new ApexCharts(document.querySelector("#musyrifBarChart"), optionsMusyrif);
+    const chartMusyrif = new ApexCharts(document.querySelector('#musyrifBarChart'), optMusyrif);
     chartMusyrif.render();
 
-    // Listen for theme changes and update charts
-    const observer = new MutationObserver(function() {
-        const fc = chartForeColor();
-        const gc = chartGridColor();
-        const tt = isDark() ? 'dark' : 'light';
+    // Theme observer — update charts on theme change
+    new MutationObserver(() => {
+        const fg = chartFg(), gc = chartGrid(), tt = isDark() ? 'dark' : 'light';
         chartPredikat.updateOptions({
-            chart: { foreColor: fc },
-            legend: { labels: { colors: fc } },
+            chart: { foreColor: fg },
+            legend: { labels: { colors: fg } },
+            plotOptions: { pie: { donut: { labels: { total: { color: fg } } } } },
             tooltip: { theme: tt }
         });
         chartMusyrif.updateOptions({
-            chart: { foreColor: fc },
-            xaxis: { labels: { style: { colors: fc } } },
-            yaxis: { labels: { style: { colors: fc } } },
-            legend: { labels: { colors: fc } },
+            chart: { foreColor: fg },
+            xaxis: { labels: { style: { colors: fg } } },
+            yaxis: { labels: { style: { colors: fg } } },
+            legend: { labels: { colors: fg } },
             grid: { borderColor: gc },
             tooltip: { theme: tt }
         });
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 </script>
 @endsection

@@ -105,8 +105,8 @@ class RaportController extends Controller
     // 2. Halaman Form Input Nilai
     public function index()
     {
-        // Mengambil semua musyrif dari tabel musyrifs (persistent)
-        $musyrif_list = Musyrif::orderBy('nama')->get();
+        // Mengambil semua guru aktif dari tabel gurus untuk digunakan sebagai musyrif
+        $musyrif_list = \App\Models\Guru::where('is_active', true)->orderBy('nama')->get();
 
         // Mengambil daftar santri unik beserta musyrif & skor terakhirnya
         $santri_list = Raport::select('nama_santri', 'musyrif', 'adab', 'kelancaran', 'tajwid', 'fashahah', 'catatan')
@@ -114,8 +114,13 @@ class RaportController extends Controller
                              ->get()
                              ->unique('nama_santri');
 
+        // Mengambil seluruh data santri aktif dari database master santri
+        $santri_db_list = \App\Models\Santri::where('status', 'Aktif')
+                             ->orderBy('nama_lengkap')
+                             ->get();
+
         // Pastikan return view mengarah ke file yang benar (input.blade.php)
-        return view('input', compact('musyrif_list', 'santri_list'));
+        return view('input', compact('musyrif_list', 'santri_list', 'santri_db_list'));
     }
 
     // 3. Halaman Tabel Daftar Santri
@@ -149,7 +154,8 @@ class RaportController extends Controller
     public function edit($id)
     {
         $santri = Raport::findOrFail($id);
-        return view('edit', compact('santri'));
+        $gurus = \App\Models\Guru::where('is_active', true)->orderBy('nama')->get();
+        return view('edit', compact('santri', 'gurus'));
     }
 
     public function update(Request $request, $id)
@@ -166,10 +172,17 @@ class RaportController extends Controller
         return redirect('/daftar')->with('success', 'Data berhasil dihapus.');
     }
 
+    public function truncate()
+    {
+        Raport::truncate();
+        return redirect('/daftar')->with('success', 'Seluruh data berhasil dikosongkan.');
+    }
+
     public function cetak($id)
     {
         $rapor = Raport::findOrFail($id);
-        return view('cetak', compact('rapor'));
+        $guru = \App\Models\Guru::findByName($rapor->musyrif);
+        return view('cetak', compact('rapor', 'guru'));
     }
 
     public function cetakSemua(Request $request)

@@ -322,7 +322,7 @@
         flex-shrink: 0;
     }
 
-    /* ── Dark Mode ───────────────────────────────────────────── */
+    /* ── Dark Modes ───────────────────────────────────────────── */
     [data-theme="dark"] .hero-banner {
         background: linear-gradient(135deg, #060d1e 0%, #0c2d54 50%, #0369a1 100%);
     }

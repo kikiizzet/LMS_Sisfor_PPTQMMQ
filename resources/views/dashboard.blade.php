@@ -364,9 +364,6 @@
 
 <div class="container-fluid px-0">
 
-    {{-- ============================================================
-         SECTION 1 — HERO COMMAND CENTER
-    ============================================================ --}}
     <div class="dash-section mb-4">
         <div class="hero-banner">
             <div class="row align-items-center">

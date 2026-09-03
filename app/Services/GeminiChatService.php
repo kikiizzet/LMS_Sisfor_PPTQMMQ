@@ -110,7 +110,7 @@ class GeminiChatService
 
     private function getSystemContext(): string
     {
-        // Gabungkan Context Statis & FAQ Dinamis
+        
         $staticContext = $this->getPesantrenContext();
         $faqContext = $this->getFAQContext();
         return $staticContext . "\n\n" . $faqContext;

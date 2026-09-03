@@ -4,24 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Rapor MMQ</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logoo.png') }}">
-    <meta name="description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Sistem Rapor MMQ Digital">
-    <meta property="og:description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
-    <meta property="og:image" content="{{ asset('images/logoo.png') }}">
-    <meta property="og:site_name" content="MMQ Digital">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="Sistem Rapor MMQ Digital">
-    <meta property="twitter:description" content="Sistem Informasi Laporan Hasil Belajar (Rapor) Santri Pondok Pesantren Tahfidzul Qur'an Makkah Madinatul Qur'an Pacitan.">
-    <meta property="twitter:image" content="{{ asset('images/logoo.png') }}">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -764,7 +746,7 @@
             </li>
             <li>
                 <a href="{{ route('raport-kmi.grid') }}" class="{{ Request::is('raport-kmi/grid') ? 'active' : '' }}">
-                    <i class="bi bi-grid-3x3-gap-fill me-3 {{ Request::is('raport-kmi/grid') ? '' : 'text-warning' }}"></i> Smart Input
+                    <i class="bi bi-grid-3x3-gap-fill me-3 {{ Request::is('raport-kmi/grid') ? '' : 'text-warning' }}"></i> Smart Grid Input
                 </a>
             </li>
             <li>
@@ -774,12 +756,7 @@
             </li>
             <li>
                 <a href="{{ route('raport-kmi.create') }}" class="{{ Request::is('raport-kmi/create') ? 'active' : '' }}">
-                    <i class="bi bi-pencil-square me-3"></i> Nilai KMI  
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.presensi.index') }}" class="{{ Request::is('admin/presensi*') ? 'active' : '' }}">
-                    <i class="bi bi-clipboard-check me-3"></i> Input Presensi
+                    <i class="bi bi-pencil-square me-3"></i> Nilai KMI (Legacy)
                 </a>
             </li>
 

@@ -34,7 +34,7 @@ class GeminiChatService
             return ['success' => false, 'message' => 'API Keys belum dikonfigurasi.'];
         }
 
-        // 1. Cek Cache (untuk pertanyaan berulang yang sama persis).
+        // 1. Cek Cache (untuk pertanyaan berulang yang sama persis)
         $cacheKey = 'gemini_reply_' . md5(strtolower(trim($userMessage)));
         if (empty($history) && Cache::has($cacheKey)) {
             return ['success' => true, 'message' => Cache::get($cacheKey)];

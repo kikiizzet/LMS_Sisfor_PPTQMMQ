@@ -2,9 +2,7 @@
 
 @section('main-content')
 <style>
-    /* ============================================================
-       DASHBOARD PREMIUM — MMQ DIGITAL
-    ============================================================ */
+   
 
     @keyframes fadeSlideUp {
         from { opacity: 0; transform: translateY(20px); }
@@ -373,42 +371,32 @@
         <div class="hero-banner">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <div class="hero-badge">
-                        <span class="dot"></span>
-                        Sistem Aktif · Real-time
-                    </div>
+                   
                     <h1 class="hero-title">Pusat Komando<br>MMQ Digital</h1>
                     <p class="hero-sub">Pantau seluruh perkembangan akademik santri dalam satu tampilan cerdas dan terintegrasi.</p>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="/input" class="btn-hero btn-hero-primary">
-                            <i class="bi bi-pencil-square"></i> Input Tahfidz
+                           </i> Input Tahfidz
                         </a>
                         <a href="{{ route('raport-kmi.create') }}" class="btn-hero btn-hero-outline">
-                            <i class="bi bi-journal-plus"></i> Input KMI
+                            </i> Input KMI
                         </a>
                         <a href="{{ route('raport-kmi.grid') }}" class="btn-hero btn-hero-warning">
-                            <i class="bi bi-grid-3x3-gap-fill"></i> Smart Grid
+                            </i> Smart Grid
                         </a>
                     </div>
-                </div>
-                <div class="col-lg-4 text-end d-none d-lg-flex justify-content-end align-items-center">
-                    <i class="bi bi-layers-half hero-float-icon"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- ============================================================
-         SECTION 2 — STAT CARDS
-    ============================================================ --}}
+    
     <div class="dash-section mb-4">
         <div class="row g-3">
             {{-- Total Santri --}}
             <div class="col-6 col-xl">
                 <div class="stat-card-premium stat-card-primary" onclick="window.location='/daftar'">
-                    <div class="stat-icon stat-icon-primary">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
+                   
                     <div class="stat-label">Total Santri</div>
                     <div class="stat-value stat-value-primary">{{ $totalSantriGlobal }}</div>
                     <div class="d-flex flex-wrap gap-1 mt-1">
@@ -421,9 +409,6 @@
             {{-- Mumtaz --}}
             <div class="col-6 col-xl">
                 <div class="stat-card-premium stat-card-success" onclick="showDetail('Mumtaz')">
-                    <div class="stat-icon stat-icon-success">
-                        <i class="bi bi-mortarboard-fill"></i>
-                    </div>
                     <div class="stat-label">Mumtaz</div>
                     <div class="stat-value stat-value-success">{{ $mumtaz }}</div>
                     <div class="progress mt-2" style="height:5px;border-radius:10px;background:#d1fae5;">
@@ -435,9 +420,6 @@
             {{-- Jayyid Jiddan --}}
             <div class="col-6 col-xl">
                 <div class="stat-card-premium stat-card-info" onclick="showDetail('Jayyid Jiddan')">
-                    <div class="stat-icon stat-icon-info">
-                        <i class="bi bi-star-fill"></i>
-                    </div>
                     <div class="stat-label">Jayyid Jiddan</div>
                     <div class="stat-value stat-value-info">{{ $jayyidJiddan }}</div>
                     <div class="stat-label mt-1" style="font-size:0.66rem;color:#7c3aed;">Sangat Baik</div>
@@ -447,9 +429,6 @@
             {{-- Jayyid --}}
             <div class="col-6 col-xl">
                 <div class="stat-card-premium stat-card-warning" onclick="showDetail('Jayyid')">
-                    <div class="stat-icon stat-icon-warning">
-                        <i class="bi bi-star-half"></i>
-                    </div>
                     <div class="stat-label">Jayyid</div>
                     <div class="stat-value stat-value-warning">{{ $jayyid }}</div>
                     <div class="stat-label mt-1" style="font-size:0.66rem;color:#d97706;">Cukup Baik</div>
@@ -459,9 +438,7 @@
             {{-- Maqbul --}}
             <div class="col-12 col-xl">
                 <div class="stat-card-premium stat-card-danger" onclick="showDetail('Maqbul')">
-                    <div class="stat-icon stat-icon-danger">
-                        <i class="bi bi-exclamation-triangle-fill"></i>
-                    </div>
+                  
                     <div class="stat-label">Maqbul</div>
                     <div class="stat-value stat-value-danger">{{ $maqbul }}</div>
                     <div class="stat-label mt-1" style="font-size:0.66rem;color:#dc2626;">Bimbingan Khusus</div>

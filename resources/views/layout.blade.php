@@ -764,7 +764,7 @@
             </li>
             <li>
                 <a href="{{ route('raport-kmi.grid') }}" class="{{ Request::is('raport-kmi/grid') ? 'active' : '' }}">
-                    <i class="bi bi-grid-3x3-gap-fill me-3 {{ Request::is('raport-kmi/grid') ? '' : 'text-warning' }}"></i> Smart Grid Input
+                    <i class="bi bi-grid-3x3-gap-fill me-3 {{ Request::is('raport-kmi/grid') ? '' : 'text-warning' }}"></i> Smart Input
                 </a>
             </li>
             <li>
@@ -774,7 +774,7 @@
             </li>
             <li>
                 <a href="{{ route('raport-kmi.create') }}" class="{{ Request::is('raport-kmi/create') ? 'active' : '' }}">
-                    <i class="bi bi-pencil-square me-3"></i> Nilai KMI (Legacy)
+                    <i class="bi bi-pencil-square me-3"></i> Nilai KMI  
                 </a>
             </li>
             <li>

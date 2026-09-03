@@ -596,16 +596,7 @@
         <div class="container mx-auto px-4 sm:px-6 relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 sm:gap-20 items-center">
                 <div data-aos="fade-up" data-aos-duration="1000" class="text-center lg:text-left">
-                    
-                    <!-- ADMISSION BANNER -->
-                    <a href="#daftar" class="inline-flex items-center gap-3 bg-islamic-gold-500/10 hover:bg-islamic-gold-500/20 border border-islamic-gold-500/30 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full mb-6 sm:mb-8 transition-all group backdrop-blur-sm self-center lg:self-start">
-                        <span class="relative flex h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-islamic-gold-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-islamic-gold-500"></span>
-                        </span>
-                        <span class="text-xs sm:text-sm font-bold text-islamic-gold-400 tracking-wide uppercase">Daftar Santri Baru 2026/2027</span>
-                        <i class="bi bi-chevron-right text-islamic-gold-400 text-xs group-hover:translate-x-1 transition-transform"></i>
-                    </a>
+                  
 
                     <p class="font-arabic text-2xl sm:text-3xl mb-4 sm:mb-6 text-islamic-gold-400">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
                     <h1 class="text-3xl sm:text-5xl xl:text-6xl font-extrabold mb-6 leading-tight">

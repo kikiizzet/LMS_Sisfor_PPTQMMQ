@@ -239,31 +239,31 @@
             <div class="col">
                 <div class="stat-card stat-hadir">
                     <div class="stat-number">{{ $totalHadir }}</div>
-                    <div class="stat-label"><i class="fas fa-check-circle me-1"></i>Hadir</div>
+                    <div class="stat-label"></i>Hadir</div>
                 </div>
             </div>
             <div class="col">
                 <div class="stat-card stat-sakit">
                     <div class="stat-number">{{ $totalSakit }}</div>
-                    <div class="stat-label"><i class="fas fa-thermometer me-1"></i>Sakit</div>
+                    <div class="stat-label"></i>Sakit</div>
                 </div>
             </div>
             <div class="col">
                 <div class="stat-card stat-izin">
                     <div class="stat-number">{{ $totalIzin }}</div>
-                    <div class="stat-label"><i class="fas fa-envelope me-1"></i>Izin</div>
+                    <div class="stat-label"></i>Izin</div>
                 </div>
             </div>
             <div class="col">
                 <div class="stat-card stat-alfa">
                     <div class="stat-number">{{ $totalAlfa }}</div>
-                    <div class="stat-label"><i class="fas fa-times-circle me-1"></i>Alfa</div>
+                    <div class="stat-label"></i>Alfa</div>
                 </div>
             </div>
             <div class="col">
                 <div class="stat-card stat-belum">
                     <div class="stat-number">{{ $totalBelum }}</div>
-                    <div class="stat-label"><i class="fas fa-clock me-1"></i>Belum</div>
+                    <div class="stat-label"></i>Belum</div>
                 </div>
             </div>
         </div>

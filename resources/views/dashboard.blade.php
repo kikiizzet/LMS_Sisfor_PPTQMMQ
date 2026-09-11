@@ -736,7 +736,7 @@
     const chartMusyrif = new ApexCharts(document.querySelector('#musyrifBarChart'), optMusyrif);
     chartMusyrif.render();
 
-    // Theme observer — update charts on theme changee
+    // Theme observer — update charts on theme change
     new MutationObserver(() => {
         const fg = chartFg(), gc = chartGrid(), tt = isDark() ? 'dark' : 'light';
         chartPredikat.updateOptions({

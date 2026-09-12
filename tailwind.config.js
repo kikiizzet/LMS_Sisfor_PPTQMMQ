@@ -48,4 +48,4 @@ export default {
 
     plugins: [forms],
 };
-//ssas
+//ssass

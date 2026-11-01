@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\PublicRaportController;
+use App\Http\Controllers\AkhlakController;
 
 // Rute Bawaan Breeze (Login/Register)
 require __DIR__.'/auth.php';
@@ -180,4 +181,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/santri', \App\Http\Controllers\SantriController::class)->names('admin.santri')->except(['show']);
     Route::get('/admin/mutasi-kelas', [\App\Http\Controllers\MutasiKelasController::class, 'index'])->name('admin.mutasi-kelas.index');
     Route::post('/admin/mutasi-kelas/proses', [\App\Http\Controllers\MutasiKelasController::class, 'proses'])->name('admin.mutasi-kelas.proses');
+
+    // Penilaian Akhlak Harian (Buku Mutabaah Digital)
+    Route::get('/admin/akhlak', [AkhlakController::class, 'index'])->name('admin.akhlak.index');
+    Route::get('/admin/akhlak/create', [AkhlakController::class, 'create'])->name('admin.akhlak.create');
+    Route::post('/admin/akhlak', [AkhlakController::class, 'store'])->name('admin.akhlak.store');
+    Route::get('/admin/akhlak/{akhlak}/edit', [AkhlakController::class, 'edit'])->name('admin.akhlak.edit');
+    Route::put('/admin/akhlak/{akhlak}', [AkhlakController::class, 'update'])->name('admin.akhlak.update');
+    Route::delete('/admin/akhlak/{akhlak}', [AkhlakController::class, 'destroy'])->name('admin.akhlak.destroy');
+    Route::get('/admin/akhlak/rekap', [AkhlakController::class, 'rekap'])->name('admin.akhlak.rekap');
+    Route::post('/admin/akhlak/sinkron-raport-kmi', [AkhlakController::class, 'sinkronRaportKmi'])->name('admin.akhlak.sinkron-raport-kmi');
 });

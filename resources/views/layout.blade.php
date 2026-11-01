@@ -750,6 +750,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.akhlak.index') }}" class="{{ Request::is('admin/akhlak*') ? 'active' : '' }}">
+                    <i class="bi bi-journal-check me-3"></i> Penilaian Akhlak
+                </a>
+            </li>
+            <li>
                 <a href="/input" class="{{ Request::is('input') ? 'active' : '' }}">
                     <i class="bi bi-pencil-square me-3"></i> Nilai Tahfidz
                 </a>

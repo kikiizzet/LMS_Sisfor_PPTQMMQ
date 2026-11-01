@@ -29,4 +29,9 @@ class Santri extends Model
     {
         return $this->hasMany(Presensi::class, 'santri_id');
     }
+
+    public function akhlakPenilaians()
+    {
+        return $this->hasMany(AkhlakPenilaian::class, 'santri_id');
+    }
 }

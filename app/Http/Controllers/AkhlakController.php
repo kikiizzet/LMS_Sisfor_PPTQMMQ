@@ -393,7 +393,7 @@ class AkhlakController extends Controller
                 $fuzzyCrisp = 0;
             }
 
-            // Jumlah catatan pelanggaran
+            // Jumlah catatan pelanggarans
             $jumlahPelanggaran = $catatanList->filter(function ($item) {
                 return !empty($item->catatan_pelanggaran) || $item->skor_kedisiplinan < 3;
             })->count();

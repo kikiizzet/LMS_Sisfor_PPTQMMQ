@@ -156,6 +156,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/raport-kmi/store-ajax', [App\Http\Controllers\RaportKmiController::class, 'storeAjax'])->name('raport-kmi.store-ajax');
     Route::post('/raport-kmi/update-score', [App\Http\Controllers\RaportKmiController::class, 'updateScoreAjax'])->name('raport-kmi.update-score');
     Route::post('/raport-kmi/update-detail', [App\Http\Controllers\RaportKmiController::class, 'updateDetailAjax'])->name('raport-kmi.update-detail');
+    // API: auto-fill data santri untuk form raport KMI
+    Route::get('/raport-kmi/get-santri-data', [App\Http\Controllers\RaportKmiController::class, 'getSantriData'])->name('raport-kmi.get-santri-data');
 
     // Admin Question Management (FAQ/Comment System)
     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('admin.questions.index');
@@ -191,4 +193,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/akhlak/{akhlak}', [AkhlakController::class, 'destroy'])->name('admin.akhlak.destroy');
     Route::get('/admin/akhlak/rekap', [AkhlakController::class, 'rekap'])->name('admin.akhlak.rekap');
     Route::post('/admin/akhlak/sinkron-raport-kmi', [AkhlakController::class, 'sinkronRaportKmi'])->name('admin.akhlak.sinkron-raport-kmi');
+
+    // Presensi / Absensi Harian Santri
+    Route::get('/admin/presensi', [\App\Http\Controllers\PresensiController::class, 'index'])->name('admin.presensi.index');
+    Route::post('/admin/presensi', [\App\Http\Controllers\PresensiController::class, 'store'])->name('admin.presensi.store');
+    Route::get('/admin/presensi/rekap', [\App\Http\Controllers\PresensiController::class, 'rekap'])->name('admin.presensi.rekap');
+    Route::post('/admin/presensi/update-single', [\App\Http\Controllers\PresensiController::class, 'updateSingle'])->name('admin.presensi.update-single');
+    Route::get('/admin/presensi/summary/{no_induk}', [\App\Http\Controllers\PresensiController::class, 'getSummary'])->name('admin.presensi.summary');
 });

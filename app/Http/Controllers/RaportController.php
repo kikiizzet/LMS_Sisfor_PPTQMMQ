@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Raport;
 use App\Models\Musyrif;
+use App\Models\AkhlakPenilaian;
+use App\Models\Santri;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class RaportController extends Controller
@@ -212,9 +214,28 @@ class RaportController extends Controller
         $tahfidzRaw = Raport::select('nama_santri', 'adab', 'kelancaran', 'tajwid', 'fashahah', 'musyrif')->latest()->get();
         $kmiRaw = \App\Models\RaportKmi::all();
 
+        // Ambil data akhlak per santri (semua waktu, nilai rata-rata)
+        $akhlakRaw = \App\Models\AkhlakPenilaian::select('santri_id')
+            ->selectRaw('AVG(nilai_angka) as rata_nilai_angka')
+            ->groupBy('santri_id')
+            ->get()
+            ->keyBy('santri_id');
+
         // Helper function to normalize name for comparison
         $normalize = function($name) {
             return strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $name));
+        };
+
+        // Fungsi normalisasi SAW akhlak (skala 0-100 → 0-1)
+        $normalisasiAkhlak = function($nilaiAngka) {
+            // Nilai fuzzy crisp berdasarkan predikat
+            if ($nilaiAngka >= 90) $fuzzy = 95.0;
+            elseif ($nilaiAngka >= 80) $fuzzy = 85.0;
+            elseif ($nilaiAngka >= 75) $fuzzy = 77.5;
+            elseif ($nilaiAngka > 0)  $fuzzy = 37.5;
+            else $fuzzy = 0;
+            // Normalisasi SAW: nilai / max_value (max = 95)
+            return $fuzzy > 0 ? round($fuzzy / 95.0, 4) : 0;
         };
 
         $studentMap = [];
@@ -228,8 +249,11 @@ class RaportController extends Controller
                     'musyrif' => $t->musyrif,
                     'rata_tahfidz' => ($t->adab + $t->kelancaran + $t->tajwid + $t->fashahah) / 4,
                     'rata_kmi' => 0,
+                    'rata_akhlak' => 0,
+                    'nilai_akhlak_fuzzy' => 0,
                     'has_tahfidz' => true,
                     'has_kmi' => false,
+                    'has_akhlak' => false,
                 ];
             }
         }
@@ -237,14 +261,24 @@ class RaportController extends Controller
         // 3. Process KMI
         foreach ($kmiRaw as $k) {
             $key = $normalize($k->nama_santri);
-            
+
+            // Cari data akhlak berdasarkan santri_id dari tabel santris (match by no_induk)
+            $santri = \App\Models\Santri::where('no_induk', $k->no_induk)->first();
+            $rataAkhlak = 0;
+            $nilaiFuzzyNorm = 0;
+            $hasAkhlak = false;
+            if ($santri && isset($akhlakRaw[$santri->id])) {
+                $rataAkhlak = round($akhlakRaw[$santri->id]->rata_nilai_angka, 2);
+                $nilaiFuzzyNorm = $normalisasiAkhlak($rataAkhlak);
+                $hasAkhlak = true;
+            }
+
             // Calculate KMI average (using p_a for Pengetahuan)
             $rataKmi = 0;
             if (!empty($k->nilai_mapel) && is_array($k->nilai_mapel)) {
                 $totalNilai = 0;
                 $countMapel = 0;
                 foreach ($k->nilai_mapel as $m) {
-                    // Cek 'p_a' (Pengetahuan Angka) sebagai nilai utama
                     if (isset($m['p_a']) && is_numeric($m['p_a'])) {
                         $totalNilai += $m['p_a'];
                         $countMapel++;
@@ -256,15 +290,22 @@ class RaportController extends Controller
             if (isset($studentMap[$key])) {
                 $studentMap[$key]['rata_kmi'] = $rataKmi;
                 $studentMap[$key]['has_kmi'] = true;
-                // Keep the "Tahfidz" version of the name or use the KMI one if preferred
+                if ($hasAkhlak) {
+                    $studentMap[$key]['rata_akhlak'] = $rataAkhlak;
+                    $studentMap[$key]['nilai_akhlak_fuzzy'] = $nilaiFuzzyNorm;
+                    $studentMap[$key]['has_akhlak'] = true;
+                }
             } else {
                 $studentMap[$key] = [
                     'nama_santri' => $k->nama_santri,
                     'musyrif' => '-',
                     'rata_tahfidz' => 0,
                     'rata_kmi' => $rataKmi,
+                    'rata_akhlak' => $rataAkhlak,
+                    'nilai_akhlak_fuzzy' => $nilaiFuzzyNorm,
                     'has_tahfidz' => false,
                     'has_kmi' => true,
+                    'has_akhlak' => $hasAkhlak,
                 ];
             }
         }
@@ -273,7 +314,7 @@ class RaportController extends Controller
         $rekap = collect($studentMap)->map(function ($item) {
             $rt = $item['rata_tahfidz'];
             $rk = $item['rata_kmi'];
-            
+
             if ($rt > 0 && $rk > 0) {
                 $totalRata = ($rt + $rk) / 2;
             } else {

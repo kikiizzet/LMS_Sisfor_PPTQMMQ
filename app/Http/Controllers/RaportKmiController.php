@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\RaportKmi;
+use App\Models\Presensi;
+use App\Models\AkhlakPenilaian;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -505,6 +507,81 @@ class RaportKmiController extends Controller
         return response()->json([
             'success' => true,
             'raport' => $raport
+        ]);
+    }
+
+    /**
+     * API: Ambil data presensi + akhlak santri untuk auto-fill form raport KMI.
+     * Dipanggil via AJAX ketika admin pilih santri (by no_induk) + input semester/tahun.
+     */
+    public function getSantriData(Request $request)
+    {
+        $noInduk      = $request->input('no_induk');
+        $semester     = $request->input('semester');
+        $tahunPelajaran = $request->input('tahun_pelajaran');
+
+        $santri = \App\Models\Santri::where('no_induk', $noInduk)->first();
+
+        if (!$santri) {
+            return response()->json(['success' => false, 'message' => 'Santri tidak ditemukan']);
+        }
+
+        // Hitung presensi (seluruh semester, bukan per bulan saja)
+        // Asumsikan semester 1: Juli-Desember, semester 2: Januari-Juni
+        $tahun = (int) explode('/', $tahunPelajaran ?? date('Y') . '/' . (date('Y')+1))[0];
+        if ($semester == 1) {
+            $periodeAwal  = "$tahun-07-01";
+            $periodeAkhir = "$tahun-12-31";
+        } else {
+            $periodeAkhir = ($tahun + 1) . "-06-30";
+            $periodeAwal  = ($tahun + 1) . "-01-01";
+        }
+
+        $sakit = Presensi::where('santri_id', $santri->id)
+            ->where('status', 'Sakit')
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir])
+            ->count();
+        $izin = Presensi::where('santri_id', $santri->id)
+            ->where('status', 'Izin')
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir])
+            ->count();
+        $ghoib = Presensi::where('santri_id', $santri->id)
+            ->where('status', 'Alfa')
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir])
+            ->count();
+
+        // Ambil rata-rata nilai akhlak semester ini
+        $akhlakQuery = AkhlakPenilaian::where('santri_id', $santri->id)
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir]);
+
+        $rataAdab         = $akhlakQuery->avg('skor_adab') ?? 0;
+        $rataKedisiplinan = (clone $akhlakQuery)->avg('skor_kedisiplinan') ?? 0;
+        $rataIbadah       = (clone $akhlakQuery)->avg('skor_ibadah') ?? 0;
+        $rataKegiatan     = (clone $akhlakQuery)->avg('skor_kegiatan') ?? 0;
+        $rataKebersihan   = (clone $akhlakQuery)->avg('skor_kebersihan') ?? 0;
+        $rataKerajinan    = ($rataIbadah + $rataKegiatan) / 2;
+        $hasAkhlak        = (clone $akhlakQuery)->count() > 0;
+
+        // Konversi ke huruf (skala 1-4)
+        $skorHuruf = function($rata) {
+            if ($rata >= 3.5) return 'A';
+            if ($rata >= 2.5) return 'B';
+            if ($rata >= 1.5) return 'C';
+            return 'D';
+        };
+
+        return response()->json([
+            'success'      => true,
+            'nama_santri'  => $santri->nama_lengkap,
+            'kelas'        => $santri->kelas->nama_kelas ?? '',
+            'sakit'        => $sakit,
+            'izin'         => $izin,
+            'ghoib'        => $ghoib,
+            'has_akhlak'   => $hasAkhlak,
+            'mental_moral'        => $hasAkhlak ? $skorHuruf($rataAdab) : null,
+            'mental_kedisiplinan' => $hasAkhlak ? $skorHuruf($rataKedisiplinan) : null,
+            'mental_kerajinan'    => $hasAkhlak ? $skorHuruf($rataKerajinan) : null,
+            'mental_kebersihan'   => $hasAkhlak ? $skorHuruf($rataKebersihan) : null,
         ]);
     }
 }

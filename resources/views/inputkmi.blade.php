@@ -532,56 +532,105 @@
         });
     });
 
-    // Auto-fill KMI santri details (No Induk, Kelas, dan Presensi Kehadiran)
+    // Auto-fill KMI santri details (No Induk, Kelas, Presensi, & Akhlak/Mental Karakter)
     document.addEventListener('DOMContentLoaded', function() {
         const kmiSantriSelect = document.getElementById('kmi_santri_select');
+
+        function fetchSantriData(noInduk) {
+            if (!noInduk) return;
+            const semesterEl = document.querySelector('select[name="semester"]');
+            const tahunEl    = document.querySelector('input[name="tahun_pelajaran"]');
+            const semester   = semesterEl ? semesterEl.value : 1;
+            const tahun      = tahunEl ? tahunEl.value : '';
+
+            const url = `/raport-kmi/get-santri-data?no_induk=${encodeURIComponent(noInduk)}&semester=${semester}&tahun_pelajaran=${encodeURIComponent(tahun)}`;
+
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.success) return;
+
+                    // Isi presensi
+                    const sakitInput = document.querySelector('input[name="sakit"]');
+                    const izinInput  = document.querySelector('input[name="izin"]');
+                    const ghoibInput = document.querySelector('input[name="ghoib"]');
+                    if (sakitInput) sakitInput.value = data.sakit ?? 0;
+                    if (izinInput)  izinInput.value  = data.izin  ?? 0;
+                    if (ghoibInput) ghoibInput.value = data.ghoib ?? 0;
+
+                    // Isi mental/karakter dari data akhlak (jika ada)
+                    if (data.has_akhlak) {
+                        const moralInput  = document.querySelector('input[name="mental_moral"]');
+                        const disipInput  = document.querySelector('input[name="mental_kedisiplinan"]');
+                        const rajinInput  = document.querySelector('input[name="mental_kerajinan"]');
+                        const bersihInput = document.querySelector('input[name="mental_kebersihan"]');
+                        if (moralInput)  moralInput.value  = data.mental_moral;
+                        if (disipInput)  disipInput.value  = data.mental_kedisiplinan;
+                        if (rajinInput)  rajinInput.value  = data.mental_kerajinan;
+                        if (bersihInput) bersihInput.value = data.mental_kebersihan;
+
+                        // Tampilkan notifikasi kecil
+                        showAutoFillNotif('Data presensi & akhlak berhasil dimuat otomatis.');
+                    } else {
+                        showAutoFillNotif('Data presensi dimuat. Nilai akhlak belum tersedia untuk semester ini.', 'warning');
+                    }
+                })
+                .catch(err => console.error('Gagal mengambil data santri:', err));
+        }
+
+        function showAutoFillNotif(msg, type = 'success') {
+            let notif = document.getElementById('autofill-notif');
+            if (!notif) {
+                notif = document.createElement('div');
+                notif.id = 'autofill-notif';
+                notif.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px 18px;border-radius:10px;font-size:0.82rem;font-weight:600;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .3s;';
+                document.body.appendChild(notif);
+            }
+            notif.textContent = msg;
+            notif.style.background = type === 'success' ? '#dcfce7' : '#fef9c3';
+            notif.style.color      = type === 'success' ? '#166534' : '#854d0e';
+            notif.style.display    = 'block';
+            setTimeout(() => { notif.style.display = 'none'; }, 3500);
+        }
+
         if (kmiSantriSelect) {
             kmiSantriSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
                 if (selectedOption && selectedOption.value !== "") {
                     const noInduk = selectedOption.getAttribute('data-no-induk') || '';
-                    const kelas = selectedOption.getAttribute('data-kelas') || '';
+                    const kelas   = selectedOption.getAttribute('data-kelas') || '';
 
                     const noIndukInput = document.querySelector('input[name="no_induk"]');
                     if (noIndukInput) noIndukInput.value = noInduk;
-                    
-                    const kelasSelect = document.querySelector('select[name="kelas"]');
-                    if (kelasSelect && kelas) {
-                        kelasSelect.value = kelas;
-                    }
 
-                    // Fetch presensi summary real-time berdasarkan no_induk
-                    if (noInduk) {
-                        fetch(`/admin/santri/presensi-summary/${noInduk}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    const sakitInput = document.querySelector('input[name="sakit"]');
-                                    const izinInput = document.querySelector('input[name="izin"]');
-                                    const ghoibInput = document.querySelector('input[name="ghoib"]');
-                                    
-                                    if (sakitInput) sakitInput.value = data.sakit;
-                                    if (izinInput) izinInput.value = data.izin;
-                                    if (ghoibInput) ghoibInput.value = data.ghoib;
-                                }
-                            })
-                            .catch(err => console.error('Gagal mengambil data presensi:', err));
-                    }
+                    const kelasSelect = document.querySelector('select[name="kelas"]');
+                    if (kelasSelect && kelas) kelasSelect.value = kelas;
+
+                    fetchSantriData(noInduk);
                 } else {
                     const noIndukInput = document.querySelector('input[name="no_induk"]');
                     if (noIndukInput) noIndukInput.value = '';
                     const kelasSelect = document.querySelector('select[name="kelas"]');
                     if (kelasSelect) kelasSelect.value = '';
 
-                    const sakitInput = document.querySelector('input[name="sakit"]');
-                    const izinInput = document.querySelector('input[name="izin"]');
-                    const ghoibInput = document.querySelector('input[name="ghoib"]');
-                    if (sakitInput) sakitInput.value = 0;
-                    if (izinInput) izinInput.value = 0;
-                    if (ghoibInput) ghoibInput.value = 0;
+                    ['sakit','izin','ghoib'].forEach(n => {
+                        const el = document.querySelector(`input[name="${n}"]`);
+                        if (el) el.value = 0;
+                    });
                 }
             });
         }
+
+        // Re-fetch jika semester/tahun berubah setelah santri dipilih
+        ['select[name="semester"]','input[name="tahun_pelajaran"]'].forEach(sel => {
+            const el = document.querySelector(sel);
+            if (el) {
+                el.addEventListener('change', function() {
+                    const noIndukInput = document.querySelector('input[name="no_induk"]');
+                    if (noIndukInput && noIndukInput.value) fetchSantriData(noIndukInput.value);
+                });
+            }
+        });
     });
 </script>
 

@@ -500,64 +500,61 @@
         });
     });
 
-    // Auto-fill KMI santri details (No Induk, Kelas, dan Presensi Kehadiran)
+    // Auto-fill KMI santri details (No Induk, Kelas, Presensi, & Akhlak)
     document.addEventListener('DOMContentLoaded', function() {
         const kmiSantriSelect = document.getElementById('kmi_santri_select');
-        
-        function fetchPresensi(noInduk) {
+
+        function fetchSantriData(noInduk, updateMental = true) {
             if (!noInduk) return;
-            fetch(`/admin/santri/presensi-summary/${noInduk}`)
-                .then(response => response.json())
+            const semesterEl = document.querySelector('select[name="semester"]');
+            const tahunEl    = document.querySelector('input[name="tahun_pelajaran"]');
+            const semester   = semesterEl ? semesterEl.value : 1;
+            const tahun      = tahunEl ? tahunEl.value : '';
+
+            const url = `/raport-kmi/get-santri-data?no_induk=${encodeURIComponent(noInduk)}&semester=${semester}&tahun_pelajaran=${encodeURIComponent(tahun)}`;
+
+            fetch(url)
+                .then(r => r.json())
                 .then(data => {
-                    if (data.success) {
-                        const sakitInput = document.querySelector('input[name="sakit"]');
-                        const izinInput = document.querySelector('input[name="izin"]');
-                        const ghoibInput = document.querySelector('input[name="ghoib"]');
-                        
-                        if (sakitInput) sakitInput.value = data.sakit;
-                        if (izinInput) izinInput.value = data.izin;
-                        if (ghoibInput) ghoibInput.value = data.ghoib;
+                    if (!data.success) return;
+
+                    // Isi presensi
+                    const sakitInput = document.querySelector('input[name="sakit"]');
+                    const izinInput  = document.querySelector('input[name="izin"]');
+                    const ghoibInput = document.querySelector('input[name="ghoib"]');
+                    if (sakitInput) sakitInput.value = data.sakit ?? 0;
+                    if (izinInput)  izinInput.value  = data.izin  ?? 0;
+                    if (ghoibInput) ghoibInput.value = data.ghoib ?? 0;
+
+                    // Update mental/karakter jika ada data akhlak
+                    if (updateMental && data.has_akhlak) {
+                        const moralInput  = document.querySelector('input[name="mental_moral"]');
+                        const disipInput  = document.querySelector('input[name="mental_kedisiplinan"]');
+                        const rajinInput  = document.querySelector('input[name="mental_kerajinan"]');
+                        const bersihInput = document.querySelector('input[name="mental_kebersihan"]');
+                        if (moralInput && data.mental_moral)  moralInput.value  = data.mental_moral;
+                        if (disipInput && data.mental_kedisiplinan)  disipInput.value  = data.mental_kedisiplinan;
+                        if (rajinInput && data.mental_kerajinan)  rajinInput.value  = data.mental_kerajinan;
+                        if (bersihInput && data.mental_kebersihan) bersihInput.value = data.mental_kebersihan;
                     }
                 })
-                .catch(err => console.error('Gagal mengambil data presensi:', err));
+                .catch(err => console.error('Gagal mengambil data santri:', err));
         }
 
         if (kmiSantriSelect) {
-            // Trigger fetch presensi untuk santri yang sedang terpilih saat halaman pertama kali dibuka
-            const selectedOption = kmiSantriSelect.options[kmiSantriSelect.selectedIndex];
-            if (selectedOption && selectedOption.value !== "") {
-                const noInduk = selectedOption.getAttribute('data-no-induk') || '';
-                fetchPresensi(noInduk);
-            }
-
             kmiSantriSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
                 if (selectedOption && selectedOption.value !== "") {
                     const noInduk = selectedOption.getAttribute('data-no-induk') || '';
-                    const kelas = selectedOption.getAttribute('data-kelas') || '';
+                    const kelas   = selectedOption.getAttribute('data-kelas') || '';
 
                     const noIndukInput = document.querySelector('input[name="no_induk"]');
                     if (noIndukInput) noIndukInput.value = noInduk;
-                    
-                    const kelasSelect = document.querySelector('select[name="kelas"]');
-                    if (kelasSelect && kelas) {
-                        kelasSelect.value = kelas;
-                    }
 
-                    // Fetch presensi summary real-time
-                    fetchPresensi(noInduk);
-                } else {
-                    const noIndukInput = document.querySelector('input[name="no_induk"]');
-                    if (noIndukInput) noIndukInput.value = '';
                     const kelasSelect = document.querySelector('select[name="kelas"]');
-                    if (kelasSelect) kelasSelect.value = '';
+                    if (kelasSelect && kelas) kelasSelect.value = kelas;
 
-                    const sakitInput = document.querySelector('input[name="sakit"]');
-                    const izinInput = document.querySelector('input[name="izin"]');
-                    const ghoibInput = document.querySelector('input[name="ghoib"]');
-                    if (sakitInput) sakitInput.value = 0;
-                    if (izinInput) izinInput.value = 0;
-                    if (ghoibInput) ghoibInput.value = 0;
+                    fetchSantriData(noInduk, true);
                 }
             });
         }

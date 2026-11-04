@@ -42,7 +42,7 @@
 <div class="content-wrapper">
     <div class="container-fluid px-4 py-4">
 
-        <!-- Header -->
+        <!-- HeaderS -->
         <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
             <div class="d-flex align-items-center gap-3">
                 <a href="{{ route('admin.akhlak.index', ['tanggal' => $tanggal]) }}" class="btn btn-light rounded-circle border p-2">

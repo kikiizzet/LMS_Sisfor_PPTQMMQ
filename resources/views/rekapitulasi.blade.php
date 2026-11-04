@@ -111,7 +111,10 @@
                         <th class="py-3 text-uppercase small fw-bold text-muted">Santri</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-center d-none d-sm-table-cell">Tahfidz</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-center d-none d-sm-table-cell">KMI</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted text-center">Rata</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted text-center d-none d-lg-table-cell">
+                            Akhlak <small class="d-block fw-normal text-muted" style="font-size:0.55rem;letter-spacing:0;">Fuzzy-SAW (0–1)</small>
+                        </th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted text-center">Rata Akademik</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-center pe-3">Status</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-center pe-3" style="width: 60px;">Aksi</th>
                     </tr>
@@ -142,6 +145,29 @@
                                 <span class="text-muted" style="font-size: 0.65rem;">-</span>
                             @endif
                         </td>
+                        {{-- Kolom Akhlak Fuzzy-SAW --}}
+                        <td class="text-center d-none d-lg-table-cell">
+                            @if(isset($item->has_akhlak) && $item->has_akhlak)
+                                @php
+                                    $fuzzyNorm = $item->nilai_akhlak_fuzzy ?? 0;
+                                    $persen = round($fuzzyNorm * 100);
+                                    if ($persen >= 90) { $warna = '#166534'; $bg = '#dcfce7'; $label = 'Sangat Baik'; }
+                                    elseif ($persen >= 80) { $warna = '#0369a1'; $bg = '#e0f2fe'; $label = 'Baik'; }
+                                    elseif ($persen >= 70) { $warna = '#854d0e'; $bg = '#fef9c3'; $label = 'Cukup'; }
+                                    else { $warna = '#991b1b'; $bg = '#fee2e2'; $label = 'Kurang'; }
+                                @endphp
+                                <div>
+                                    <span class="fw-bold" style="font-size:0.8rem;color:{{ $warna }};">
+                                        {{ number_format($fuzzyNorm, 4) }}
+                                    </span><br>
+                                    <span style="font-size:0.6rem;background:{{ $bg }};color:{{ $warna }};border-radius:4px;padding:1px 5px;">
+                                        {{ $label }}
+                                    </span>
+                                </div>
+                            @else
+                                <span class="text-muted" style="font-size:0.65rem;">—</span>
+                            @endif
+                        </td>
                         <td class="text-center">
                             <span class="fw-bold {{ $item->total_rata >= 85 ? 'text-primary' : ($item->total_rata >= 75 ? 'text-success' : 'text-warning') }}" style="font-size: 0.9rem;">
                                 {{ number_format($item->total_rata, 1) }}
@@ -165,7 +191,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-5">
+                        <td colspan="8" class="text-center py-5">
                             <i class="bi bi-inbox fs-1 text-muted d-block mb-2"></i>
                             <span class="text-muted">Belum ada data santri yang terdaftar di sistem.</span>
                         </td>

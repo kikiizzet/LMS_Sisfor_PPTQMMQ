@@ -749,7 +749,12 @@
                     <i class="bi bi-grid-3x3-gap-fill me-3 {{ Request::is('raport-kmi/grid') ? '' : 'text-warning' }}"></i> Smart Grid Input
                 </a>
             </li>
-            <li>
+                        <li>
+                <a href="{{ route('admin.presensi.index') }}" class="{{ Request::is('admin/presensi*') ? 'active' : '' }}">
+                    <i class="bi bi-calendar2-check me-3"></i> Presensi Harian
+                </a>
+            </li>
+<li>
                 <a href="{{ route('admin.akhlak.index') }}" class="{{ Request::is('admin/akhlak*') ? 'active' : '' }}">
                     <i class="bi bi-journal-check me-3"></i> Penilaian Akhlak
                 </a>
